@@ -50,18 +50,11 @@ abstract class Fixture extends AbstractFixture implements OrderedFixtureInterfac
             $this->loadProd();
         }
 
-        $this->manager->flush();
-
         if ($this->getEnv() === "dev") {
-            $this->loadProd();
             $this->loadDev();
         }
 
-        $this->manager->flush();
-
         if ($this->getEnv() === 'test') {
-            $this->loadProd();
-            $this->loadDev();
             $this->loadTest();
         }
 

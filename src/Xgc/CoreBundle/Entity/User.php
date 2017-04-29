@@ -119,6 +119,8 @@ abstract class User extends Entity implements AdvancedUserInterface, \Serializab
         $ret = parent::__toArray();
 
         $ret['username'] = $this->getUsername();
+        $ret['avatar'] = $this->getAvatar();
+        $ret['createdAt'] = $this->getCreatedAt();
 
         $user = SymfonyHelper::getInstance()->getUser();
         if ($user === $this) {
@@ -127,6 +129,11 @@ abstract class User extends Entity implements AdvancedUserInterface, \Serializab
         }
 
         return $ret;
+    }
+
+    public function __getType(): string
+    {
+        return 'user';
     }
 
     /**

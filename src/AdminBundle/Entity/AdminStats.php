@@ -47,4 +47,9 @@ class AdminStats extends Entity
     {
         $this->currentUsers = $currentUsers;
     }
+
+    public function __getType(): string
+    {
+        return 'admin_stats';
+    }
 }

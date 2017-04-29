@@ -9,6 +9,7 @@ use Xgc\CoreBundle\Exception\ExceptionHandler;
 use Xgc\CoreBundle\Helper\DoctrineHelper;
 use Xgc\CoreBundle\Service\RequestService;
 use Xgc\CoreBundle\Service\SecurityService;
+use Xgc\UtilsBundle\Helper\JsonHelper;
 
 abstract class Controller extends \Symfony\Bundle\FrameworkBundle\Controller\Controller
 {
@@ -42,8 +43,8 @@ abstract class Controller extends \Symfony\Bundle\FrameworkBundle\Controller\Con
         return $this->security->checkUser();
     }
 
-    public function toArray(Entity $entity)
+    public function toJson(Entity $entity, array &$map, string $key)
     {
-        return DoctrineHelper::getInstance()->toArray($entity);
+        JsonHelper::getInstance()->encode($entity, $map, $key);
     }
 }

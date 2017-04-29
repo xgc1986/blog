@@ -32,7 +32,7 @@ class LoadUser extends Fixture
         $this->persist($user);
     }
 
-    public function loadDev(): void
+    public function loadTest(): void
     {
         $this->persist($this->createUser('reg_0😀', true, false, '', ''));
 

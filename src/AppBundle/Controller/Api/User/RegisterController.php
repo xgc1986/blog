@@ -6,8 +6,8 @@ use AppBundle\Entity\User;
 use Xgc\CoreBundle\Controller\Controller;
 use Xgc\CoreBundle\Exception\Http\InvalidParamException;
 use Xgc\CoreBundle\Exception\Http\PreconditionFailedException;
-use Xgc\CoreBundle\Helper\DoctrineHelper;
 use Xgc\CoreBundle\HttpFoundation\JsonResponse;
+use Xgc\UtilsBundle\Helper\JsonHelper;
 use Xgc\UtilsBundle\Helper\Text;
 
 class RegisterController extends Controller
@@ -41,10 +41,8 @@ class RegisterController extends Controller
         $manager->persist($user);
         $manager->flush();
 
-        return new JsonResponse(
-            [
-                'user' => DoctrineHelper::getInstance()->toArray($user),
-            ]
-        );
+        $result = [];
+        JsonHelper::getInstance()->encode($user, $result, 'user');
+        return new JsonResponse($result);
     }
 }

@@ -37,11 +37,13 @@ class RegisterControllerTest extends WebTestCase
                 'password2' => '123qweQWE',
             ]
         );
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'user'   => [
                     'id'       => $this->getUserId('😀🍆💩🂡🇪🇸'),
                     'username' => '😀🍆💩🂡🇪🇸',
+                    'avatar' => '/bundles/xgccore/images/avatar.jpg',
+                    '__type' => 'user'
                 ],
                 'status' => 200,
             ],
@@ -76,7 +78,7 @@ class RegisterControllerTest extends WebTestCase
                 'password2' => '123qweQWE🍆',
             ]
         );
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'status'  => 400,
                 'message' => "Password insecure",
@@ -98,7 +100,7 @@ class RegisterControllerTest extends WebTestCase
                 'password2' => '123qweQWE',
             ]
         );
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'status' => 200,
                 'user'   => [
@@ -122,7 +124,7 @@ class RegisterControllerTest extends WebTestCase
                 'password2' => '123qweQWE',
             ]
         );
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'status' => 200,
                 'user'   => [
@@ -146,7 +148,7 @@ class RegisterControllerTest extends WebTestCase
                 'password2' => '123qweQWE',
             ]
         );
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'message' => "This value is too long. It should have 255 characters or less.",
                 'param'   => 'email',
@@ -168,7 +170,7 @@ class RegisterControllerTest extends WebTestCase
                 'password2' => '123qweQWE',
             ]
         );
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'message' => "This value is not a valid email address.",
                 'param'   => 'email',
@@ -190,7 +192,7 @@ class RegisterControllerTest extends WebTestCase
                 'password2' => '123qweQWE',
             ]
         );
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'message' => "This value is too short. It should have 4 characters or more.",
                 'param'   => 'username',
@@ -212,7 +214,7 @@ class RegisterControllerTest extends WebTestCase
                 'password2' => '123qweQWE',
             ]
         );
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'message' => "This value is too long. It should have 32 characters or less.",
                 'param'   => 'username',
@@ -233,7 +235,7 @@ class RegisterControllerTest extends WebTestCase
                 'password2' => '123qweQWE',
             ]
         );
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'message' => "Missing param 'username'",
                 'status'  => 400,
@@ -254,7 +256,7 @@ class RegisterControllerTest extends WebTestCase
                 'password2' => '123qweQWE',
             ]
         );
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'message' => "Missing param 'email'",
                 'status'  => 400,
@@ -275,7 +277,7 @@ class RegisterControllerTest extends WebTestCase
                 'password2' => '123qweQWE',
             ]
         );
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'message' => "Missing param 'password'",
                 'status'  => 400,
@@ -296,7 +298,7 @@ class RegisterControllerTest extends WebTestCase
                 'password' => '123qweQWE',
             ]
         );
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'message' => "Missing param 'password2'",
                 'status'  => 400,
@@ -319,7 +321,7 @@ class RegisterControllerTest extends WebTestCase
             ]
         );
         $user->check(412);
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'message' => 'Passwords missmatch',
                 'status'  => 412,
@@ -341,7 +343,7 @@ class RegisterControllerTest extends WebTestCase
             ]
         );
         $user->check(405);
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'message' => "Method 'GET' is not allowed",
                 'status'  => 405,
@@ -368,7 +370,7 @@ class RegisterControllerTest extends WebTestCase
             ]
         );
         $user->check(409);
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'message'  => "username '$name' already exists",
                 'resource' => 'username',
@@ -396,7 +398,7 @@ class RegisterControllerTest extends WebTestCase
             ]
         );
         $user->check(409);
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'message'  => "email '$name@gmail.com' already exists",
                 'resource' => 'email',
@@ -404,6 +406,7 @@ class RegisterControllerTest extends WebTestCase
                 'value'    => "$name@gmail.com",
             ],
             $user->getResponse()
+
         );
     }
 
@@ -443,7 +446,7 @@ class RegisterControllerTest extends WebTestCase
             ]
         );
 
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'status'  => 405,
                 'message' => "Method 'GET' is not allowed",

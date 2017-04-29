@@ -17,11 +17,10 @@ class ControllerTest extends KernelTestCase
 {
     public function testRequestController()
     {
-        $request = new Request;
+        $request = new Request();
         $requestStackMock = $this->createMock(RequestStack::class);
         $requestStackMock->method('getCurrentRequest')
-            ->will(self::returnValue($request))
-        ;
+            ->will(self::returnValue($request));
 
         self::loadKernel();
         $container = self::$kernel->getContainer();
@@ -29,7 +28,7 @@ class ControllerTest extends KernelTestCase
         $container->set('request_stack', $requestStackMock);
         $container->set('security.firewall.map', $firewall);
 
-        $controller = new ControllerStub;
+        $controller = new ControllerStub();
 
         $controller->setContainer(self::$kernel->getContainer());
         self::assertNotNull($controller->getRequest());
@@ -37,16 +36,43 @@ class ControllerTest extends KernelTestCase
 
     public function testToArray()
     {
-        $obj = new Class Extends Entity {
+        $obj = new Class Extends Entity
+        {
             public function getId(): int
             {
                 return 3;
             }
+
+            public function __getType(): string
+            {
+                return 'tempEntity';
+            }
         };
 
-        $ctlr = new Class extends Controller {};
-        self::assertEquals([
-            'id' => 3,
-        ], $ctlr->toArray($obj));
+        $ctlr = new Class extends Controller
+        {
+        };
+
+        $result = [];
+        $ctlr->toJson($obj, $result, 'test');
+        self::assertEquals(
+            [
+                'test' => [
+                    'id' => 3,
+                    '__type' => 'tempEntity',
+                    '__id' => 3
+                ],
+                '__included' => [
+                    'tempEntity' => [
+                        3 => [
+                            'id' => 3,
+                            '__type' => 'tempEntity',
+                            '__id' => 3
+                        ]
+                    ]
+                ]
+            ],
+            $result
+        );
     }
 }

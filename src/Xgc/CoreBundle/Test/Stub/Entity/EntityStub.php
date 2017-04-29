@@ -10,4 +10,9 @@ class EntityStub extends Entity
     {
         $this->id = -1;
     }
+
+    public function __getType(): string
+    {
+        return 'entity_stub';
+    }
 }

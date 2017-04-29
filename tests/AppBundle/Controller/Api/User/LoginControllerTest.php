@@ -22,7 +22,7 @@ class LoginControllerTest extends WebTestCase
         );
 
         //$user->check(200);
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'status' => 200,
                 'user'   => [
@@ -30,6 +30,8 @@ class LoginControllerTest extends WebTestCase
                     'id'       => $this->getUserId("reg_01"),
                     'username' => "reg_01",
                     'ip'       => '127.0.0.1',
+                    'avatar' => '/bundles/xgccore/images/avatar.jpg',
+                    '__type' => 'user'
                 ],
             ],
             $user->getResponse()
@@ -48,7 +50,7 @@ class LoginControllerTest extends WebTestCase
         );
 
         //$user->check(200);
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'status' => 200,
                 'user'   => [
@@ -56,6 +58,8 @@ class LoginControllerTest extends WebTestCase
                     'id'       => $this->getUserId("reg_01"),
                     'username' => "reg_01",
                     'ip'       => '127.0.0.1',
+                    'avatar' => '/bundles/xgccore/images/avatar.jpg',
+                    '__type' => 'user'
                 ],
             ],
             $user->getResponse()
@@ -72,7 +76,7 @@ class LoginControllerTest extends WebTestCase
                 'password' => '12qwQW?!',
             ]
         );
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'message' => 'Access denied',
                 'status'  => 401,
@@ -91,7 +95,7 @@ class LoginControllerTest extends WebTestCase
                 'password' => '1234',
             ]
         );
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'message' => 'Access denied',
                 'status'  => 401,
@@ -109,7 +113,8 @@ class LoginControllerTest extends WebTestCase
                 'username' => 'reg_01',
             ]
         );
-        self::assertEquals(
+
+        self::assertArraySubset(
             [
                 'message' => "Missing param 'password'",
                 'status'  => 400,
@@ -128,7 +133,7 @@ class LoginControllerTest extends WebTestCase
                 'password' => '12qwQW?!',
             ]
         );
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'message' => "Missing param 'username'",
                 'status'  => 400,
@@ -148,7 +153,7 @@ class LoginControllerTest extends WebTestCase
                 'password' => '12qwQW?!',
             ]
         );
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'message' => 'The account is not activated',
                 'status'  => 409,
@@ -167,7 +172,7 @@ class LoginControllerTest extends WebTestCase
                 'password' => '12qwQW?!',
             ]
         );
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'message' => 'Account is dissabled',
                 'status'  => 403,
@@ -195,7 +200,7 @@ class LoginControllerTest extends WebTestCase
             ]
         );
 
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'status'  => 405,
                 'message' => "Method 'GET' is not allowed",

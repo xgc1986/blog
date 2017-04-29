@@ -2,7 +2,9 @@
 declare(strict_types=1);
 namespace Xgc\CoreBundle\Entity;
 
-abstract class Entity
+use Xgc\UtilsBundle\Helper\JSON;
+
+abstract class Entity implements JSON
 {
     protected $id;
 

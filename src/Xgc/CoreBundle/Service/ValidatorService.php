@@ -9,6 +9,9 @@ use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Xgc\CoreBundle\Entity\Entity;
 use Xgc\CoreBundle\Exception\ExceptionHandler;
+use Xgc\CoreBundle\Exception\Http\InternalErrorException;
+use Xgc\CoreBundle\Exception\Http\InvalidParamException;
+use Xgc\CoreBundle\Exception\Http\ResourceAlreadyExistsException;
 
 class ValidatorService
 {
@@ -34,13 +37,13 @@ class ValidatorService
 
     protected function handle(ConstraintViolation $error, ExceptionHandler $handler) {
         if ($error->getConstraint() instanceof UniqueEntity) {
-            $handler->throwResourceAlreadyExists($error->getPropertyPath(), $error->getInvalidValue());
+            throw new ResourceAlreadyExistsException($error->getPropertyPath(), $error->getInvalidValue());
         } else if ($error->getConstraint() instanceof Length) {
-            $handler->throwInvalidParam($error->getPropertyPath(), $error->getMessage());
+            throw new InvalidParamException($error->getPropertyPath(), $error->getMessage());
         } else if ($error->getConstraint() instanceof Email) {
-            $handler->throwInvalidParam($error->getPropertyPath(), $error->getMessage());
+            throw new InvalidParamException($error->getPropertyPath(), $error->getMessage());
         } else {
-            $handler->throwInternalServerError(new \Exception("Unmanaged constraint " . get_class($error->getConstraint())));
+            throw new InternalErrorException(null, new \Exception("Unmanaged constraint " . get_class($error->getConstraint())));
         }
     }
 }

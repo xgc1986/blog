@@ -12,10 +12,8 @@ class MeController extends Controller
     {
         $user = $this->checkUser();
 
-        return new JsonResponse(
-            [
-                'user' => $this->toArray($user),
-            ]
-        );
+        $me = [];
+        $this->toJson($user, $me, 'user');
+        return new JsonResponse($me);
     }
 }

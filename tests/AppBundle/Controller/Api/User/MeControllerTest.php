@@ -17,7 +17,7 @@ class MeControllerTest extends WebTestCase
         $user = new UserClient('reg_01', '12qwQW?!', self::createClient());
         $user->logIn();
         $user->get('app_api_user_me');
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'status' => 200,
                 'user'   => [
@@ -41,7 +41,7 @@ class MeControllerTest extends WebTestCase
                 'password' => '12qwQW?!',
             ]
         );
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'status'  => 401,
                 'message' => 'Access denied',
@@ -56,7 +56,7 @@ class MeControllerTest extends WebTestCase
         $user->logIn();
         $user->post('app_api_user_me');
 
-        self::assertEquals(
+        self::assertArraySubset(
             [
                 'status'  => 405,
                 'message' => "Method 'POST' is not allowed",

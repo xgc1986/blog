@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Api\User;
 use Xgc\CoreBundle\Controller\Controller;
 use Xgc\CoreBundle\Helper\DoctrineHelper;
 use Xgc\CoreBundle\HttpFoundation\JsonResponse;
+use Xgc\UtilsBundle\Helper\JsonHelper;
 
 class LoginController extends Controller
 {
@@ -15,10 +16,8 @@ class LoginController extends Controller
 
         $user = $this->get('xgc.security')->login("AppBundle:User", "api", $username, $password, true);
 
-        return new JsonResponse(
-            [
-                'user' => DoctrineHelper::getInstance()->toArray($user),
-            ]
-        );
+        $resp = [];
+        JsonHelper::getInstance()->encode($user, $resp, 'user');
+        return new JsonResponse($resp);
     }
 }
