@@ -1,0 +1,17 @@
+{% javascripts filter="?jsqueeze" output="js/app.js"
+'@XgcAdminLTEBundle/Resources/public/js/jquery.min.js'
+'@XgcAdminLTEBundle/Resources/public/js/bootstrap.min.js'
+'@XgcAdminLTEBundle/Resources/public/js/adminlte.min.js'
+'@XgcAdminLTEBundle/Resources/public/plugins/slimScroll/jquery.slimscroll.min.js'
+%}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+{% stylesheets filter="scssphp" output="css/lte.css"
+'@XgcAdminLTEBundle/Resources/public/css/bootstrap.min.css'
+'@XgcAdminLTEBundle/Resources/public/css/AdminLTE.min.css'
+'@XgcAdminLTEBundle/Resources/public/css/skins/_all-skins.min.css'
+'@XgcCoreBundle/Resources/public/css/font-awesome.min.css'
+%}
+<link rel="stylesheet" href="{{ asset_url }}"/>
+{% endstylesheets %}

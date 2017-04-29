@@ -1,0 +1,34 @@
+{% spaceless %}
+    <html>
+    <head>
+        <title>{% block title %}SUSI{% endblock %}</title>
+    </head>
+
+    <body>
+        {% block body %}
+        {% endblock %}
+
+        {#% block footer %}
+            <div><span><b>version:&nbsp;</b></span><span>{{ versions["xgc1986/susi"] }}</span></div>
+        {% endblock %#}
+
+        {{ ws_client() }}
+        {{ admin_resource() }}
+
+        <script>
+            var websocket = WS.connect("ws://127.0.0.1:8080");
+            websocket.on("socket/connect", function(session){
+                //session is an Autobahn JS WAMP session.
+
+                console.log("Successfully Connected!");
+            });
+
+            websocket.on("socket/disconnect", function(error){
+                //error provides us with some insight into the disconnection: error.reason and error.code
+
+                console.log("Disconnected for " + error.reason + " with code " + error.code);
+            })
+        </script>
+    </body>
+    </html>
+{% endspaceless %}

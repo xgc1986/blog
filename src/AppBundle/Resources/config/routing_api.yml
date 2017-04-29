@@ -1,0 +1,39 @@
+app_api_user_register:
+    path:     /register
+    methods: ['POST']
+    defaults: { _controller: AppBundle:Api/User/Register:index }
+
+app_api_user_login:
+    path:     /login
+    methods: ['POST']
+    defaults: { _controller: AppBundle:Api/User/Login:index }
+
+app_api_user_logout:
+    path:     /logout
+    methods: ['GET']
+    defaults: { _controller: AppBundle:Api/User/Logout:index }
+
+app_api_user_me:
+    path:     /user/me
+    methods: ['GET']
+    defaults: { _controller: AppBundle:Api/User/Me:index }
+
+app_api_user_reset_password:
+    path:     /reset/password/new
+    methods: ['POST']
+    defaults: { _controller: AppBundle:Api/User/ResetPasswordToken:index }
+
+app_api_user_reset_password_ask:
+    path:     /reset/password/ask
+    methods: ['POST']
+    defaults: { _controller: AppBundle:Api/User/ResetPasswordToken:ask }
+
+app_api_user_register_enable:
+    path:     /register/enable
+    methods: ['POST']
+    defaults: { _controller: AppBundle:Api/User/RegisterToken:index }
+
+app_api_user_register_ask:
+    path:     /register/ask
+    methods: ['POST']
+    defaults: { _controller: AppBundle:Api/User/RegisterToken:ask }

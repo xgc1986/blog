@@ -1,0 +1,16 @@
+admin:
+    resource: "@AdminBundle/Controller/"
+    host: '%host_admin%'
+    type:     annotation
+    prefix:   /
+
+web:
+    resource: "@WebBundle/Controller/"
+    host: '%host_web%'
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Resources/config/routing.yml"
+    host: '%host_api%'
+    prefix:   /

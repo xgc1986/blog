@@ -1,0 +1,46 @@
+{% extends "@Admin/base_home.html.twig" %}
+
+{% block javascripts %}
+    {% javascripts filter="?jsqueeze" output="js/user_profileavatar_index.js"
+    '@AdminBundle/Resources/public/js/User/Profile/index.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets filter="scssphp" output="css/user_profile_index.css"
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="box box-solid box-default">
+                <div class="box-header with-border"><h3 class="box-title">Datos personales</h3></div>
+                <form method="post" action="{{ url('admin_user_profileavatar_update') }}" enctype="multipart/form-data">
+                    <div class="box-body">
+                        <img src="{{ app.user.avatar }}">
+
+                        <div class="form-group">
+                            <label for="avatar">Avatar</label>
+                            <input class="form-control" type="file" name="avatar" id="avatar" required>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <input class="btn btn-primary" type="submit" value="Actualizar">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

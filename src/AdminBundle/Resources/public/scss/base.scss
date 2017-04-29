@@ -1,0 +1,13 @@
+body {
+  background: #EEEEEE;
+}
+
+.error {
+  visibility: hidden;
+}
+
+.has-error {
+  .error {
+    visibility: visible;
+  }
+}

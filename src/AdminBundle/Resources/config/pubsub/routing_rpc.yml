@@ -1,0 +1,8 @@
+admin_rpc:
+    channel: server/{method}
+    handler:
+        callback: 'server.rpc' #related to the getName() or your RPC service
+    requirements:
+        method:
+            path: "[a-z_]+" #accept all valid regex, don't put delimiters !
+

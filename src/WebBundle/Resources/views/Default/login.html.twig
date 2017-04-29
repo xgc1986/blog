@@ -1,0 +1,63 @@
+{% extends "WebBundle::base.html.twig" %}
+
+{% block title %}
+    : Login
+{% endblock %}
+
+{% block body %}
+
+    <form method="POST" action="{{ url('web_default_login') }}">
+        <label>
+            Usuario:
+            <input type="text" name="username"/>
+        </label>
+        <br>
+        <label>
+            Contraseña:
+            <input type="password" name="password"/>
+        </label>
+        <br>
+        <input type="submit"/>
+    </form>
+
+    <form method="POST" action="{{ url('app_api_user_login') }}">
+        <label>
+            Usuario:
+            <input type="text" name="username"/>
+        </label>
+        <br>
+        <label>
+            Contraseña:
+            <input type="password" name="password"/>
+        </label>
+        <br>
+        <input type="submit"/>
+    </form>
+
+    <form method="POST" action="{{ url("app_api_user_register") }}">
+        <label>
+            Usuario:
+            <input type="text" name="username"/>
+        </label>
+        <br>
+        <label>
+            Contraseña:
+            <input type="password" name="password"/>
+        </label>
+        <br>
+        <label>
+            Repita la contraseña:
+            <input type="password" name="password2"/>
+        </label>
+        <br>
+        <label>
+            Correo electrónico:
+            <input type="email" name="email"/>
+        </label>
+        <br>
+
+        <input type="submit"/>
+    </form>
+
+{{  dump(app.user) }}
+{% endblock %}

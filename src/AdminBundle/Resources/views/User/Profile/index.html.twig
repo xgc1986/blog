@@ -1,0 +1,92 @@
+{% extends "@Admin/base_home.html.twig" %}
+
+{% block content_header %}<h3>GESTIÓN DEL PERFIL DE <b>{{ app.user.username | upper }}</b></h3>{% endblock %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-solid box-default">
+                        <div class="box-header with-border"><h3 class="box-title">Datos personales</h3></div>
+                        <div class="box-body">
+
+                            <p><span>Nombre de usuario: </span><span><b>{{ app.user.username }}</b></span></p>
+                            <p><span>Correo electrónico: </span><span><b>{{ app.user.email }}</b></span></p>
+                            <p><span>Miembro desde: </span><span><b>{{ app.user.createdAt.format("d-M Y") }}</b></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="box box-solid box-default">
+                        <div class="box-header with-border"><h3 class="box-title">Avatar</h3></div>
+                        <div class="box-body">
+                            <P>
+                                <a href="{{ url('admin_user_profileavatar_index') }}" class="btn btn-default">Modificar
+                                    imagen personal</a>
+                            </P>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-solid box-default">
+                        <div class="box-header with-border"><h3 class="box-title">Contraseña</h3></div>
+                        <div class="box-body">
+                            <P>
+                                <a href="{{ url('admin_user_profileupdatepassword_index') }}" class="btn btn-default">Modificar
+                                    contraseña</a>
+                            </P>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="box box-solid box-danger">
+                        <div class="box-header with-border"><h3 class="box-title">Otras gestiones</h3></div>
+                        <div class="box-body">
+                            <div>
+                                <button class="btn btn-danger" data-toggle="modal" data-target="#delete-modal">Borrar
+                                    cuenta
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal modal-danger fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-exclamation-circle">&nbsp;</i>Borrar cuenta</h4>
+                                            </div>
+                                            <form action="{{ url('admin_user_profiledelete_index') }}" method="post">
+                                                <div class="modal-body">
+                                                    <p>Cualquier dato asociado a esta cuenta será eliminado del sistema y no se podrá recuperar.</p>
+                                                    <p>Para confirmar su decisión escriba su contraseña.</p>
+                                                    <div class="form-group">
+                                                        <label for="password">Contraseña:</label>
+                                                        <input class="form-control" type="password" name="password" id="password" required>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                    <input type="submit"  class="btn btn-danger" value="Borrar cuenta"/>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

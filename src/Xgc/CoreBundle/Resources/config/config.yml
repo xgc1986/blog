@@ -1,0 +1,10 @@
+doctrine:
+    dbal:
+        mapping_types:
+            datetime: datetime
+
+        types:
+            datetime: Xgc\CoreBundle\Type\DateTimeType
+
+
+

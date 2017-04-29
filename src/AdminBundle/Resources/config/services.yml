@@ -1,0 +1,11 @@
+services:
+    admin_bundle.admin_rpc:
+        class: AdminBundle\RPC\RPCService
+        tags:
+            - { name: gos_web_socket.rpc }
+
+    admin_bundle.admin_topic:
+        class: AdminBundle\Topic\AdminTopic
+        arguments: ['@doctrine']
+        tags:
+            - { name: gos_web_socket.topic }

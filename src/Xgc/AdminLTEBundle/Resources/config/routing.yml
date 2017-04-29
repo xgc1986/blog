@@ -1,0 +1,3 @@
+xgc_admin_lte_homepage:
+    path:     /
+    defaults: { _controller: XgcAdminLTEBundle:Default:index }

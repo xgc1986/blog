@@ -1,0 +1,4 @@
+admin_topic:
+    channel: server/stats
+    handler:
+        callback: 'admin.topic' #related to the getName() of your topic

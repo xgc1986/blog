@@ -1,0 +1,30 @@
+services:
+  xgc.core.controller:
+    class: Xgc\CoreBundle\Service\CoreControllerService
+    arguments: ["@xgc.request"]
+    tags:
+      - { name: kernel.event_subscriber }
+
+  xgc.security:
+    class: Xgc\CoreBundle\Service\SecurityService
+    arguments: ["@service_container"]
+
+  xgc.request:
+    class: Xgc\CoreBundle\Service\RequestService
+    arguments: ["@service_container"]
+    calls:
+      - [init, []]
+
+  xgc.exception.handler:
+    class: Xgc\CoreBundle\Service\ExceptionHandlerService
+    arguments: ["@service_container", "@xgc.request"]
+
+  xgc.validator:
+    class: Xgc\CoreBundle\Service\ValidatorService
+    arguments: ["@validator"]
+
+services:
+  xgc.security:
+    class: Xgc\CoreBundle\Service\SecurityService
+    arguments: ["@service_container"]
+

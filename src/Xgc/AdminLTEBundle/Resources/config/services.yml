@@ -1,0 +1,6 @@
+services:
+    admin.twig_extension:
+        class: Xgc\AdminLTEBundle\Twig\Extension\AdminLTEExtension
+        public: false
+        tags:
+            - { name: twig.extension }

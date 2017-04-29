@@ -1,0 +1,68 @@
+<html>
+<head>
+
+    <script>
+      var AdminLTEOptions = {
+        sidebarExpandOnHover: true,
+        enableBoxRefresh: true,
+        enableBSToppltip: true,
+        controlSidebarOptions: {
+          toggleBtnSelector: '[data-toggle=\'control-sidebar\']',
+          selector: '.control-sidebar',
+          slide: true,
+        },
+      };
+    </script>
+    {{ admin_resource() }}
+
+    {% stylesheets filter="scssphp" output="css/index.css"
+    '@AdminBundle/Resources/public/scss/base.scss' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+
+    {% if app.environment == 'dev' %}
+        {% javascripts filter="?jsqueeze" output="js/router.js"
+        '@AdminBundle/Resources/public/js/router_dev.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% else %}
+        {% javascripts filter="?jsqueeze" output="js/router.js"
+        '@AdminBundle/Resources/public/js/router_prod.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endif %}
+
+    {% javascripts filter="?jsqueeze" output="js/index.js"
+    '@XgcCoreBundle/Resources/public/js/main.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+
+
+
+    {% block stylesheets %}{% endblock %}
+
+    <title>{% block title %}Admin Panel{% endblock %}</title>
+</head>
+
+<body class="skin-black fixed">
+
+    <div id="app">
+        {% block body %}
+        {% endblock %}
+    </div>
+
+    {#% block footer %}
+        <div><span><b>version:&nbsp;</b></span><span>{{ versions["xgc1986/susi"] }}</span></div>
+    {% endblock %#}
+
+
+{% block javascripts %}{% endblock %}
+
+<script>
+  // $.material.init();
+</script>
+
+
+</body>
+</html>

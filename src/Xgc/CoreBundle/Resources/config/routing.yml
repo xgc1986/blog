@@ -1,0 +1,3 @@
+xgc_core_homepage:
+    path:     /
+    defaults: { _controller: XgcCoreBundle:Default:index }
