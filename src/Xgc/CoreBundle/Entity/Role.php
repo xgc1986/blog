@@ -3,12 +3,17 @@ declare(strict_types=1);
 namespace Xgc\CoreBundle\Entity;
 
 use Symfony\Component\Security\Core\Role\RoleInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class Role extends Entity implements RoleInterface
 {
 
     /**
      * @var string
+     * @Assert\Length(
+     *     min = 4,
+     *     max = 32
+     * )
      */
     protected $role;
 

@@ -1,0 +1,14 @@
+Xgc\CoreBundle\Entity\Setting:
+  type: mappedSuperclass
+  fields:
+    key:
+      type: string
+      length: 16
+      unique: true
+    type:
+      type: string
+      length: 8
+    value:
+      type: string
+
+

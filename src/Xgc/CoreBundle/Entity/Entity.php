@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace Xgc\CoreBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Xgc\UtilsBundle\Helper\DateTime;
 use Xgc\UtilsBundle\Helper\JSON;
 
@@ -11,6 +12,7 @@ abstract class Entity implements JSON
 
     /**
      * @var DateTime
+     * @Assert\DateTime()
      */
     protected $updatedAt;
 

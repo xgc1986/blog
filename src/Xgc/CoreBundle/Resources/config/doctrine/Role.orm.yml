@@ -1,8 +1,8 @@
 Xgc\CoreBundle\Entity\Role:
-    type: mappedSuperclass
-    fields:
-        role:
-            type: string
-            length: 32
-            unique: true
+  type: mappedSuperclass
+  fields:
+    role:
+      type: string
+      length: 32
+      unique: true
 

@@ -1,40 +1,40 @@
 Xgc\CoreBundle\Entity\User:
-    type: mappedSuperclass
-    fields:
-        username:
-            type: string
-            length: 32
-            unique: true
-        password:
-            type: string
-            length: 64
-        email:
-            type: string
-            unique: true
-        enabled:
-            type: boolean
-        locked:
-            type: boolean
-        registerToken:
-            type: string
-            nullable: true
-            unique: true
-            length: 32
-        registerTokenAt:
-            type: datetime
-            nullable: true
-        resetPasswordToken:
-            type: string
-            nullable: true
-            unique: true
-            length: 32
-        resetPasswordTokenAt:
-            type: datetime
-            nullable: true
-        clientIp:
-            type: string
-            length: 15
-        createdAt:
-            type: datetime
-        avatar:
-            type: string
+  type: mappedSuperclass
+  fields:
+    username:
+      type: string
+      length: 32
+      unique: true
+    password:
+      type: string
+      length: 64
+    email:
+      type: string
+      unique: true
+    enabled:
+      type: boolean
+    locked:
+      type: boolean
+    registerToken:
+      type: string
+      nullable: true
+      unique: true
+      length: 32
+    registerTokenAt:
+      type: datetime
+      nullable: true
+    resetPasswordToken:
+      type: string
+      nullable: true
+      unique: true
+      length: 32
+    resetPasswordTokenAt:
+      type: datetime
+      nullable: true
+    clientIp:
+      type: string
+      length: 15
+    createdAt:
+      type: datetime
+    avatar:
+      type: string
