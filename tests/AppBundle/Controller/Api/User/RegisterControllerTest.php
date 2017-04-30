@@ -42,7 +42,7 @@ class RegisterControllerTest extends WebTestCase
                 'user'   => [
                     'id'       => $this->getUserId('😀🍆💩🂡🇪🇸'),
                     'username' => '😀🍆💩🂡🇪🇸',
-                    'avatar' => '/bundles/xgccore/images/avatar.jpg',
+                    'avatar' => '/bundles/xgccore/img/avatar.png',
                     '__type' => 'user'
                 ],
                 'status' => 200,

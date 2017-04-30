@@ -130,7 +130,7 @@ class UserTest extends KernelTestCase
             'user' => [
                 'id'        => -1,
                 'username'  => "username",
-                'avatar'    => '/bundles/xgccore/images/avatar.jpg',
+                'avatar'    => '/bundles/xgccore/img/avatar.png',
                 '__type'    => 'user',
                 '__id'      => -1,
             ],

@@ -30,7 +30,7 @@ class LoginControllerTest extends WebTestCase
                     'id'       => $this->getUserId("reg_01"),
                     'username' => "reg_01",
                     'ip'       => '127.0.0.1',
-                    'avatar' => '/bundles/xgccore/images/avatar.jpg',
+                    'avatar' => '/bundles/xgccore/img/avatar.png',
                     '__type' => 'user'
                 ],
             ],
@@ -58,7 +58,7 @@ class LoginControllerTest extends WebTestCase
                     'id'       => $this->getUserId("reg_01"),
                     'username' => "reg_01",
                     'ip'       => '127.0.0.1',
-                    'avatar' => '/bundles/xgccore/images/avatar.jpg',
+                    'avatar' => '/bundles/xgccore/img/avatar.png',
                     '__type' => 'user'
                 ],
             ],
