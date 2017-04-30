@@ -1,2 +1,5 @@
 AppBundle\Entity\User:
     type: entity
+    manyToMany:
+        roles:
+          targetEntity: Role

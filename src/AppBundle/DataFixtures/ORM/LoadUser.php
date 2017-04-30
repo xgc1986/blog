@@ -2,8 +2,10 @@
 declare(strict_types=1);
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
 use Xgc\CoreBundle\DataFixtures\ORM\Fixture;
+use Xgc\CoreBundle\Entity\Entity;
 use Xgc\UtilsBundle\Helper\DateTime;
 
 /**
@@ -16,20 +18,28 @@ class LoadUser extends Fixture
         $user = new User;
         $user->setUsername('xgc1986');
         $user->setPassword('1234');
+        $this->getContainer()->get('xgc.entity.user')->setPassword($user, '1234');
         $user->setEmail("xgc1986@gmail.com");
         $user->setEnabled(true);
         $user->setLocked(false);
         $user->setClientIp("127.0.0.1");
+        $user->addRole($this->getRole('role-user'));
         $this->persist($user);
 
         $user = new User;
         $user->setUsername('xgc1987');
-        $user->setPassword('1234');
+        $this->getContainer()->get('xgc.entity.user')->setPassword($user, '1234');
         $user->setEmail("xgc1987@gmail.com");
         $user->setEnabled(true);
         $user->setLocked(false);
         $user->setClientIp("127.0.0.1");
+        $user->addRole($this->getRole('role-user'));
         $this->persist($user);
+    }
+
+    public function loadDev(): void
+    {
+        $this->loadProd();
     }
 
     public function loadTest(): void
@@ -66,7 +76,22 @@ class LoadUser extends Fixture
             $user->setResetPasswordToken(str_repeat($passToken, 32));
             $user->setResetPasswordTokenAt(new DateTime);
         }
+        $user->addRole($this->getRole('role-user'));
 
         return $user;
+    }
+
+    /**
+     * @param string $role
+     * @return Role|Entity
+     */
+    private function getRole(string $role): Role
+    {
+        return $this->get($role);
+    }
+
+    public function getOrder()
+    {
+        return 2;
     }
 }

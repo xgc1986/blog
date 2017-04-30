@@ -32,9 +32,10 @@ abstract class HttpException extends \Symfony\Component\HttpKernel\Exception\Htt
 
         $this->extras['message'] = strtr($this->extras['message'], $diff);
 
+
         $this->message = $this->extras['message'];
 
-        parent::__construct($status, $message, $exception);
+        parent::__construct($status, $this->message, $exception);
 
         $this->extras['status'] = $this->extras['status'] ?? $status;
 

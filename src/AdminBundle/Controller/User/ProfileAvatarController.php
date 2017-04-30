@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Xgc\CoreBundle\Controller\Controller;
+use Xgc\CoreBundle\Exception\HttpException;
 
 class ProfileAvatarController extends Controller
 {
@@ -31,7 +32,16 @@ class ProfileAvatarController extends Controller
         $user = $this->getUser();
         $id = $user->getId();
 
-        $this->get('xgc.entity.user')->uploadAvatar($user, $file, "/images/$id", "avatar");
+        try {
+            $this->get('xgc.entity.user')->uploadAvatar($user, $file, "/images/$id", "avatar");
+        } catch (HttpException $exception) {
+            $this->addFlash(
+                'error',
+                $exception->getMessage()
+            );
+
+            return $this->render('@Admin/User/ProfileAvatar/index.html.twig');
+        }
 
         $this->addFlash(
             'notice',

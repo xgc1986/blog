@@ -115,7 +115,7 @@ abstract class User extends Entity implements AdvancedUserInterface, \Serializab
         $this->roles = new ArrayCollection();
         $this->setLocked(false);
         $this->setEnabled(false);
-        $this->setAvatar('/bundles/xgccore/images/avatar.jpg');
+        $this->setAvatar('/bundles/xgccore/img/avatar.png');
         $this->setCreatedAt(new DateTime());
     }
 

@@ -1,0 +1,2 @@
+AppBundle\Entity\Role:
+    type: entity

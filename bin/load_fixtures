@@ -1,6 +1,10 @@
 # vi:syntax=sh
 # vi:tabstop=4
 
+rm -Rf web/images
+rm -Rf var/sessions
+rm -Rf var/cache
+
 while [[ $# -gt 1 ]]
 do
 	key="$1"

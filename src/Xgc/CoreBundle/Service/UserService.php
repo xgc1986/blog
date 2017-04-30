@@ -74,6 +74,10 @@ class UserService
         $x = max(($image->getWidth() - $size), 0) / 2;
         $y = max(($image->getHeight() - $size), 0) / 2;
 
+        if (!file_exists("$root/web$path")) {
+            mkdir("$root/web$path", $mode = 0777, true);
+        }
+
         $image->crop($size, $size, $x, $y);
         $image->save("$root/web$path/$name.$extension", 100);
 

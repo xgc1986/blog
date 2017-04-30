@@ -10,4 +10,5 @@ Xgc\CoreBundle\Entity\Entity:
             nullable: false
 
     lifecycleCallbacks:
-        preFlush: [refresh]
+        preUpdate: [refresh]
+        prePersist: [refresh]
