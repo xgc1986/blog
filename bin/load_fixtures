@@ -1,0 +1,27 @@
+# vi:syntax=sh
+# vi:tabstop=4
+
+while [[ $# -gt 1 ]]
+do
+	key="$1"
+
+	case $key in
+		-e|--env)
+			ENVIRONMENT="$2"
+			shift
+			;;
+		*)
+			;;
+	esac
+
+	shift
+done
+
+if [[ -z $ENVIRONMENT ]]; then
+	echo "$0" -e ENVIRONMENT
+	exit 1
+fi
+
+php bin/console doctrine:schema:drop --force --env $ENVIRONMENT &&
+php bin/console doctrine:schema:update --force --env $ENVIRONMENT &&
+php bin/console doctrine:fixtures:load -n --env $ENVIRONMENT

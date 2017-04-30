@@ -6,7 +6,7 @@ parameters:
     database_port:     ~
     database_name:     symfony
     database_user:     root
-    database_password: ~
+    database_password: 1234
     # You should uncomment this if you want use pdo_sqlite
     # database_path: "%kernel.root_dir%/data.db3"
 
@@ -15,12 +15,12 @@ parameters:
     mailer_user:       ~
     mailer_password:   ~
 
-    host_root: localhost
-    host_web: localhost
-    host_api:  localhost
-    host_admin:  localhost
+    # host configuration
+    host_root: local.xgc
+    host_web: local.xgc
+    host_api:  api.local.xgc
+    host_admin:  admin.local.xgc
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
 
-    # Host stuff
