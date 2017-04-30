@@ -100,7 +100,7 @@ class LoadUser extends Fixture
         return $this->get($role);
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 2;
     }

@@ -37,7 +37,7 @@ abstract class Fixture extends AbstractFixture implements OrderedFixtureInterfac
         $this->container = $container;
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 1;
     }
