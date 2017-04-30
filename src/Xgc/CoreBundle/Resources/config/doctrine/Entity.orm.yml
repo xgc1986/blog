@@ -4,3 +4,10 @@ Xgc\CoreBundle\Entity\Entity:
         id:
             type: integer
             generator: { strategy: AUTO }
+    fields:
+        updatedAt:
+            type: datetime
+            nullable: false
+
+    lifecycleCallbacks:
+        preFlush: [refresh]
