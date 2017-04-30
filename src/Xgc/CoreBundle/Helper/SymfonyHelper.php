@@ -26,7 +26,7 @@ class SymfonyHelper
     {
         global $kernel;
 
-        return $kernel?? $this->kernel;
+        return $kernel ?? $this->kernel;
     }
 
     public function setKernel(KernelInterface $kernel): void

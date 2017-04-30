@@ -29,7 +29,7 @@ class RegisterController extends Controller
 
         $user = new User();
         $user->setUsername($username);
-        $user->setPassword($password);
+        $this->get('xgc.entity.user')->setPassword($user, $password);
         $user->setEmail($email);
         $user->setEnabled(true);
         $user->setClientIp($this->request->getIp());

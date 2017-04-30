@@ -53,7 +53,7 @@ class LoadUser extends Fixture
     {
         $user = new User;
         $user->setUsername($id);
-        $user->setPassword('12qwQW?!');
+        $this->getContainer()->get('xgc.entity.user')->setPassword($user, '12qwQW?!');
         $user->setEmail("$id@gmail.com");
         $user->setEnabled($enabled);
         $user->setLocked($locked);

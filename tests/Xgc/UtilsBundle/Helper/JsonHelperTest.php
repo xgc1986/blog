@@ -99,7 +99,7 @@ class JsonHelperTest extends KernelTestCase
                         ],
                     ],
                 ],
-                'included' => [
+                '__included' => [
                     'arr1' => [
                         6 => [
                             '__id'   => 6,

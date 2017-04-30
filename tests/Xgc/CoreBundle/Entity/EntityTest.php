@@ -3,8 +3,8 @@ declare(strict_types=1);
 namespace Test\Xgc\CoreBundle\Entity;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Xgc\CoreBundle\Helper\DoctrineHelper;
 use Xgc\CoreBundle\Test\Stub\Entity\EntityStub;
+use Xgc\UtilsBundle\Helper\JsonHelper;
 
 /**
  * @codeCoverageIgnore
@@ -17,7 +17,7 @@ class EntityTest extends KernelTestCase
 
     function testNewEntity(): EntityStub
     {
-        $entity = new EntityStub;
+        $entity = new EntityStub();
 
         self::assertEquals(-1, $entity->getId());
 
@@ -31,9 +31,24 @@ class EntityTest extends KernelTestCase
      */
     function testToArray(EntityStub $entity)
     {
+        $result = [];
+
         $array = [
-            'id' => -1,
+            'result'    => [
+                'id'     => -1,
+                '__type' => 'entity_stub',
+                '__id'   => -1,
+            ],
+            '__included' => [
+                'entity_stub' => [
+                    -1 => [
+                        'id'     => -1,
+                        '__type' => 'entity_stub',
+                        '__id'   => -1,
+                    ],
+                ],
+            ],
         ];
-        self::assertEquals($array, DoctrineHelper::getInstance()->toArray($entity));
+        self::assertEquals($array, JsonHelper::getInstance()->encode($entity, $result, 'result'));
     }
 }

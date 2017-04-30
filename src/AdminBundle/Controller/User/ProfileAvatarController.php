@@ -28,14 +28,10 @@ class ProfileAvatarController extends Controller
     {
         $file = $this->request->checkFile('avatar');
 
-        /*
-         * check filetype is image
-         */
-
         $user = $this->getUser();
         $id = $user->getId();
 
-        $this->get('xgc.security')->uploadAvatar($file, "/images/$id", "avatar");
+        $this->get('xgc.entity.user')->uploadAvatar($user, $file, "/images/$id", "avatar");
 
         $this->addFlash(
             'notice',

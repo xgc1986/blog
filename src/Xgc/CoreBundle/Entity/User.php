@@ -3,11 +3,16 @@ declare(strict_types=1);
 namespace Xgc\CoreBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
-use Xgc\CoreBundle\Helper\SymfonyHelper;
 use Symfony\Component\Validator\Constraints as Assert;
+use Xgc\CoreBundle\Helper\SymfonyHelper;
 use Xgc\UtilsBundle\Helper\DateTime;
 
+/**
+ * @UniqueEntity("username")
+ * @UniqueEntity("email")
+ */
 abstract class User extends Entity implements AdvancedUserInterface, \Serializable
 {
     /**
@@ -107,7 +112,7 @@ abstract class User extends Entity implements AdvancedUserInterface, \Serializab
 
     function __construct()
     {
-        $this->roles = new ArrayCollection;
+        $this->roles = new ArrayCollection();
         $this->setLocked(false);
         $this->setEnabled(false);
         $this->setAvatar('/bundles/xgccore/images/avatar.jpg');
@@ -173,7 +178,7 @@ abstract class User extends Entity implements AdvancedUserInterface, \Serializab
             $this->username,
             $this->enabled,
             $this->locked,
-            $this->ip,
+            $this->clientIp
             ) = unserialize($serialized);
 
         return $this;
@@ -196,7 +201,7 @@ abstract class User extends Entity implements AdvancedUserInterface, \Serializab
      */
     public function getRoles(): array
     {
-        return ($this->roles ?? new ArrayCollection)->toArray();
+        return ($this->roles ?? new ArrayCollection())->toArray();
     }
 
     /**
@@ -217,15 +222,7 @@ abstract class User extends Entity implements AdvancedUserInterface, \Serializab
      */
     public function setPassword(string $password): void
     {
-        $encoder = SymfonyHelper::getInstance()->getContainer()->get('security.password_encoder');
-        $this->password = $encoder->encodePassword($this, $password);
-    }
-
-    public function hasPassword(string $password): bool
-    {
-        $encoder = SymfonyHelper::getInstance()->getContainer()->get('security.password_encoder');
-
-        return $encoder->isPasswordValid($this, $password);
+        $this->password = $password;
     }
 
     /**
@@ -493,9 +490,12 @@ abstract class User extends Entity implements AdvancedUserInterface, \Serializab
 
     /**
      * @param DateTime $created_at
+     * @return User
      */
-    public function setCreatedAt(DateTime $createdAt)
+    public function setCreatedAt(DateTime $createdAt): User
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 }

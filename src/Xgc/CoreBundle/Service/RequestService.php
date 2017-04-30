@@ -4,6 +4,8 @@ namespace Xgc\CoreBundle\Service;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Xgc\CoreBundle\Exception\ExceptionHandler;
 use Xgc\CoreBundle\Exception\Http\MissingParamException;
 use Xgc\CoreBundle\Exception\Http\UnsupportedParamException;
@@ -13,20 +15,20 @@ class RequestService
     protected $request;
     protected $container;
     protected $firewall;
+
     /**
      * @var ExceptionHandler
      */
     public $http;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(RequestStack $requestStack)
     {
-        $this->container = $container;
-        $this->request = $container->get('request_stack')->getCurrentRequest();
+        $this->request = $requestStack->getCurrentRequest();
     }
 
-    public function init(): void
+    public function setExceptionHandler(ExceptionHandlerService $handler): void
     {
-        $this->http = $this->container->get('xgc.exception.handler')->getCurrentExceptionHandler();
+        $this->http = $handler->getCurrentExceptionHandler();
     }
 
     /**
@@ -101,5 +103,10 @@ class RequestService
     public function getIp()
     {
         return $this->request->getClientIp();
+    }
+
+    public function getCurrentRequest(): Request
+    {
+        return $this->request;
     }
 }

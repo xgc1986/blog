@@ -7,13 +7,13 @@ services:
 
   xgc.security:
     class: Xgc\CoreBundle\Service\SecurityService
-    arguments: ["@service_container"]
+    arguments: ["@doctrine", "@xgc.request", "@security.token_storage", "@event_dispatcher", "@security.password_encoder","%secret%"]
 
   xgc.request:
     class: Xgc\CoreBundle\Service\RequestService
-    arguments: ["@service_container"]
+    arguments: ["@request_stack"]
     calls:
-      - [init, []]
+      - [setExceptionHandler, ['@xgc.exception.handler']]
 
   xgc.exception.handler:
     class: Xgc\CoreBundle\Service\ExceptionHandlerService
@@ -23,8 +23,7 @@ services:
     class: Xgc\CoreBundle\Service\ValidatorService
     arguments: ["@validator"]
 
-services:
-  xgc.security:
-    class: Xgc\CoreBundle\Service\SecurityService
+  # Entities
+  xgc.entity.user:
+    class: Xgc\CoreBundle\Service\UserService
     arguments: ["@service_container"]
-

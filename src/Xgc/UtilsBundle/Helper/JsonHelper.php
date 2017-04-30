@@ -25,7 +25,7 @@ class JsonHelper
      * @param array $result
      * @param string $key
      */
-    public function encode($input, array &$result = [], string $key): void
+    public function encode($input, array &$result = [], string $key): array
     {
         $result['__included'] = $result['__included'] ?? [];
 
@@ -61,6 +61,8 @@ class JsonHelper
         } else {
             $result[$key] = $input;
         }
+
+        return $result;
     }
 
     private function encodeRecursive($input, array &$result = [], bool $createInclude)

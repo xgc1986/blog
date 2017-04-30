@@ -5,11 +5,11 @@ namespace Test\Xgc\CoreBundle\Entity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Xgc\CoreBundle\Entity\User;
-use Xgc\CoreBundle\Helper\DoctrineHelper;
 use Xgc\CoreBundle\Helper\SymfonyHelper;
 use Xgc\CoreBundle\Test\KernelTestCase;
 use Xgc\CoreBundle\Test\Stub\Entity\UserStub;
 use Xgc\UtilsBundle\Helper\DateTime;
+use Xgc\UtilsBundle\Helper\JsonHelper;
 
 /**
  * @codeCoverageIgnore
@@ -28,18 +28,6 @@ class UserTest extends KernelTestCase
         self::assertEquals(-1, $user->getId());
 
         return $user;
-    }
-
-    /**
-     * @depends testNewUser
-     * @param User $user
-     */
-    function testHasPassword(User $user)
-    {
-        $user->setPassword("demo");
-        self::assertNotEquals("demo", $user->getPassword());
-        self::assertTrue($user->hasPassword("demo"));
-        self::assertFalse($user->hasPassword("1234"));
     }
 
     /**
@@ -124,7 +112,6 @@ class UserTest extends KernelTestCase
 
     /**
      * @depends testNewUser
-     * @depends testHasPassword
      * @depends testUsername
      * @depends testEmail
      * @depends testEnabled
@@ -137,11 +124,18 @@ class UserTest extends KernelTestCase
         self::loadKernel();
         $this->mockRequest();
 
+        $map = [];
+        JsonHelper::getInstance()->encode($user, $map, 'user');
         $array = [
-            'id'       => -1,
-            'username' => "username",
+            'user' => [
+                'id'        => -1,
+                'username'  => "username",
+                'avatar'    => '/bundles/xgccore/images/avatar.jpg',
+                '__type'    => 'user',
+                '__id'      => -1,
+            ],
         ];
-        self::assertEquals($array, DoctrineHelper::getInstance()->toArray($user));
+        self::assertArraySubset($array, $map);
     }
 
     function testEasyMethods()
@@ -156,7 +150,7 @@ class UserTest extends KernelTestCase
             }
         );
 
-        $now = new DateTime;
+        $now = new DateTime();
         $user->setRegisterToken(str_repeat("A", 32));
         $user->setResetPasswordToken(str_repeat("B", 32));
         $user->setRegisterTokenAt($now);

@@ -3,7 +3,9 @@ declare(strict_types=1);
 namespace Xgc\CoreBundle\Service;
 
 use Symfony\Component\HttpFoundation\Request;
-use Xgc\CoreBundle\Exception\Api\ApiException;
+use Xgc\CoreBundle\Exception\Http\AccessDeniedException;
+use Xgc\CoreBundle\Exception\Http\AccountBeingCreatedException;
+use Xgc\CoreBundle\Exception\Http\AccountDissabledException;
 use Xgc\CoreBundle\Helper\SymfonyHelper;
 use Xgc\CoreBundle\Test\KernelTestCase;
 
@@ -18,8 +20,10 @@ class SecurityServiceTest extends KernelTestCase
         $request = self::$kernel->getContainer()->get('xgc.request');
         $token = self::$kernel->getContainer()->get('security.token_storage');
         $event = self::$kernel->getContainer()->get('event_dispatcher');
+        $encoder = self::$kernel->getContainer()->get('security.password_encoder');
         $secret = self::$kernel->getContainer()->getParameter('secret');
-        $service = new SecurityService($doctrine, $request, $token, $event, $secret);
+
+        $service = new SecurityService($doctrine, $request, $token, $event, $encoder, $secret);
 
         self::assertTrue(true);
 
@@ -35,6 +39,7 @@ class SecurityServiceTest extends KernelTestCase
     {
         $user = $service->login("AppBundle:User", 'api', 'reg_01', '12qwQW?!', true);
         self::assertNotNull($user);
+
         return $service;
     }
 
@@ -47,6 +52,7 @@ class SecurityServiceTest extends KernelTestCase
     {
         $user = $service->login("AppBundle:User", 'api', 'reg_01', '12qwQW?!', false);
         self::assertNotNull($user);
+
         return $service;
     }
 
@@ -56,15 +62,16 @@ class SecurityServiceTest extends KernelTestCase
      */
     public function testLoginBadUsername(SecurityService $service)
     {
+        self::loadKernel();
         try {
             $service->login("AppBundle:User", 'api', 'reg_-1', '12qwQW?!', false);
-        } catch (ApiException $exc) {
-            self::assertEquals(
+        } catch (AccessDeniedException $exc) {
+            self::assertArraySubset(
                 [
                     'status'  => 401,
                     'message' => 'Access denied',
                 ],
-                json_decode($exc->getResponse()->getContent(), true)
+                $exc->getExtras()
 
             );
 
@@ -82,15 +89,16 @@ class SecurityServiceTest extends KernelTestCase
      */
     public function testLoginBadPassword(SecurityService $service)
     {
+        self::loadKernel();
         try {
             $service->login("AppBundle:User", 'api', 'reg_01', '****', false);
-        } catch (ApiException $exc) {
-            self::assertEquals(
+        } catch (AccessDeniedException $exc) {
+            self::assertArraySubset(
                 [
                     'status'  => 401,
                     'message' => 'Access denied',
                 ],
-                json_decode($exc->getResponse()->getContent(), true)
+                $exc->getExtras()
             );
 
             return;
@@ -107,15 +115,16 @@ class SecurityServiceTest extends KernelTestCase
      */
     public function testLoginNotEnabled(SecurityService $service)
     {
+        self::loadKernel();
         try {
             $service->login("AppBundle:User", 'api', 'reg_03', '12qwQW?!', false);
-        } catch (ApiException $exc) {
-            self::assertEquals(
+        } catch (AccountBeingCreatedException $exc) {
+            self::assertArraySubset(
                 [
                     'status'  => 409,
                     'message' => 'The account is not activated',
                 ],
-                json_decode($exc->getResponse()->getContent(), true)
+                $exc->getExtras()
             );
 
             return;
@@ -132,15 +141,16 @@ class SecurityServiceTest extends KernelTestCase
      */
     public function testLoginLocked(SecurityService $service)
     {
+        self::loadKernel();
         try {
             $service->login("AppBundle:User", 'api', 'reg_04', '12qwQW?!', false);
-        } catch (ApiException $exc) {
-            self::assertEquals(
+        } catch (AccountDissabledException $exc) {
+            self::assertArraySubset(
                 [
                     'status'  => 403,
                     'message' => 'Account is dissabled',
                 ],
-                json_decode($exc->getResponse()->getContent(), true)
+                $exc->getExtras()
             );
 
             return;
@@ -160,6 +170,7 @@ class SecurityServiceTest extends KernelTestCase
     {
         $user = $service->checkUser();
         self::assertNotNull($user);
+
         return $service;
     }
 
@@ -178,7 +189,6 @@ class SecurityServiceTest extends KernelTestCase
         self::$kernel->getContainer()->set('xgc.request', $request);
 
         SymfonyHelper::getInstance()->setKernel(self::$kernel);
-        $request->setHandler(self::$kernel->getContainer()->get('xgc.exception.handler'));
     }
 
 }

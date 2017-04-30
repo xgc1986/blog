@@ -30,10 +30,8 @@ class ProfileUpdatePasswordController extends Controller
         $newPassword = $this->request->check('new-password');
         $newPassword2 = $this->request->check('new-password2');
 
-        $user = $this->getUser();
-
         try {
-            $this->get('xgc.security')->changePasswords($user, $password, $newPassword, $newPassword2);
+            $this->get('xgc.security')->changePasswords($password, $newPassword, $newPassword2);
         } catch (HttpException $exception) {
             $this->addFlash(
                 'error',
