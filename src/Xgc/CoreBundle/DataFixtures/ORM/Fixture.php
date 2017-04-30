@@ -89,6 +89,7 @@ abstract class Fixture extends AbstractFixture implements OrderedFixtureInterfac
 
     public function persist(Entity $entity, ?string $key = null): void
     {
+        $this->getContainer()->get('xgc.validator')->validate($entity);
         $this->manager->persist($entity);
         if ($key) {
             $this->addReference($key, $entity);

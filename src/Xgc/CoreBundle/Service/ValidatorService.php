@@ -23,19 +23,18 @@ class ValidatorService
         $this->validator = $val;
     }
 
-    public function validate(Entity $entity, ExceptionHandler $handler): void
+    public function validate(Entity $entity): void
     {
         $errors = $this->validator->validate($entity);
 
         if (count($errors)) {
             foreach ($errors as $error) {
-                $this->handle($error, $handler);
+                $this->handle($error);
             }
         }
-
     }
 
-    protected function handle(ConstraintViolation $error, ExceptionHandler $handler) {
+    protected function handle(ConstraintViolation $error) {
         if ($error->getConstraint() instanceof UniqueEntity) {
             throw new ResourceAlreadyExistsException($error->getPropertyPath(), $error->getInvalidValue());
         } else if ($error->getConstraint() instanceof Length) {
