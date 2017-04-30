@@ -73,9 +73,14 @@
                 <div class="pull-left info">
                     <p>{{ app.user.username }}</p>
                 </div>
-            </div><!-- /.user-panel -->
+            </div>
 
-
+            <ul class="sidebar-menu">
+                {% if is_granted('ROLE_DEVELOPER') %}
+                    <li class="header">DEVELOPER</li>
+                    <li><a href="{{ url('admin_version_index') }}"><i class="fa fa-question-circle text-blue"></i> <span>Version</span></a></li>
+                {% endif %}
+            </ul>
         </div><!-- /.sidebar -->
     </div><!-- /.main-sidebar -->
 

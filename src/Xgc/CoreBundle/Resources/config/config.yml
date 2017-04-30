@@ -6,5 +6,6 @@ doctrine:
         types:
             datetime: Xgc\CoreBundle\Type\DateTimeType
 
-
-
+xgc:
+  versions:
+    base: 0.0.1

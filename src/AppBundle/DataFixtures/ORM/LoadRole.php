@@ -15,6 +15,14 @@ class LoadRole extends Fixture
         $role = new Role();
         $role->setRole('ROLE_USER');
         $this->persist($role, 'role-user');
+
+        $role = new Role();
+        $role->setRole('ROLE_ADMIN');
+        $this->persist($role, 'role-admin');
+
+        $role = new Role();
+        $role->setRole('ROLE_DEVELOPER');
+        $this->persist($role, 'role-developer');
     }
 
     public function loadDev(): void

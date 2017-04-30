@@ -16,10 +16,20 @@ class LoadUser extends Fixture
     public function loadProd(): void
     {
         $user = new User;
-        $user->setUsername('xgc1986');
+        $user->setUsername('admin');
         $user->setPassword('1234');
         $this->getContainer()->get('xgc.entity.user')->setPassword($user, '1234');
-        $user->setEmail("xgc1986@gmail.com");
+        $user->setEmail("admin@gmail.com");
+        $user->setEnabled(true);
+        $user->setLocked(false);
+        $user->setClientIp("127.0.0.1");
+        $user->addRole($this->getRole('role-admin'));
+        $this->persist($user);
+
+        $user = new User;
+        $user->setUsername('user');
+        $this->getContainer()->get('xgc.entity.user')->setPassword($user, '1234');
+        $user->setEmail("user@gmail.com");
         $user->setEnabled(true);
         $user->setLocked(false);
         $user->setClientIp("127.0.0.1");
@@ -27,13 +37,13 @@ class LoadUser extends Fixture
         $this->persist($user);
 
         $user = new User;
-        $user->setUsername('xgc1987');
+        $user->setUsername('developer');
         $this->getContainer()->get('xgc.entity.user')->setPassword($user, '1234');
-        $user->setEmail("xgc1987@gmail.com");
+        $user->setEmail("developer@gmail.com");
         $user->setEnabled(true);
         $user->setLocked(false);
         $user->setClientIp("127.0.0.1");
-        $user->addRole($this->getRole('role-user'));
+        $user->addRole($this->getRole('role-developer'));
         $this->persist($user);
     }
 

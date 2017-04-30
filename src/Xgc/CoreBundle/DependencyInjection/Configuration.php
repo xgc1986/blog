@@ -30,6 +30,11 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('versions')
+                    ->useAttributeAsKey('name')
+                    ->prototype('scalar')
+                    ->end()
+                ->end()
             ->end()
         ;
 
