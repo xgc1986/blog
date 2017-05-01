@@ -19,6 +19,8 @@ class Paginator
     protected $pages;
     protected $page;
     protected $currentPage;
+    protected $hasPrevious;
+    protected $hasNext;
 
     function __construct(int $pageSize)
     {
@@ -48,6 +50,8 @@ class Paginator
         } else {
             $this->pages = (int)round($this->size / $this->pageSize) + 1;
         }
+        $this->hasNext = $this->currentPage < $this->pages - 1;
+        $this->hasPrevious = $this->currentPage > 0;
         $this->page = $query->getResult();
     }
 
@@ -74,5 +78,15 @@ class Paginator
     public function getPageSize(): int
     {
         return $this->pageSize;
+    }
+
+    public function hasNext(): bool
+    {
+        return $this->hasNext;
+    }
+
+    public function hasPrevious(): bool
+    {
+        return $this->hasPrevious;
     }
 }
