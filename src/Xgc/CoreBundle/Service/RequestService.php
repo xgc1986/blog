@@ -4,6 +4,7 @@ namespace Xgc\CoreBundle\Service;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Xgc\CoreBundle\Exception\ExceptionHandler;
@@ -21,9 +22,15 @@ class RequestService
      */
     public $http;
 
+    /**
+     * @var HeaderBag
+     */
+    public $headers;
+
     public function __construct(RequestStack $requestStack)
     {
         $this->request = $requestStack->getCurrentRequest();
+        $this->headers = $requestStack->getCurrentRequest()->headers;
     }
 
     public function setExceptionHandler(ExceptionHandlerService $handler): void
