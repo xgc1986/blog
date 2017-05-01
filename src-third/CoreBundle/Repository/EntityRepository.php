@@ -9,13 +9,13 @@ class EntityRepository extends \Doctrine\ORM\EntityRepository
 {
     public function paginate(int $page, int $size, array $order): Paginator
     {
-        $key = array_keys($order)[0] ?? 'id';
+        $key = 'e.' . array_keys($order)[0] ?? 'id';
         $by = $order[$key] ?? 'ASC';
 
         $query = $this->createQueryBuilder('e')
-                ->orderBy($key, $by)
-                ->setMaxResults($size)
-                ->setFirstResult($page * $size);
+            ->orderBy($key, $by)
+            ->setMaxResults($size)
+            ->setFirstResult($page * $size);
         $return = new Paginator($size);
         $return->setQuery($query);
         $return->execute($page);
