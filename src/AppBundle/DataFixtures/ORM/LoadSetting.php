@@ -15,7 +15,7 @@ use Xgc\UtilsBundle\Helper\DateTime;
  */
 class LoadSetting extends Fixture
 {
-    public function loadDev(): void
+    public function loadTest(): void
     {
         $settingsService = $this->getContainer()->get('xgc.settings');
         $settingsService->put('string example', "example");
@@ -24,10 +24,5 @@ class LoadSetting extends Fixture
         $settingsService->putBool('bool example', true);
         $settingsService->putJson('json example', [1, 2, ['a' => 'A', 'b' => 'B']]);
         $settingsService->putDateTime('date example', DateTime::fromFormat('d/m/Y H:i:s', '21/02/1986 12:34:56'));
-    }
-
-    public function getOrder(): int
-    {
-        return 1;
     }
 }
