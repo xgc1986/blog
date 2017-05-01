@@ -2,13 +2,11 @@
 declare(strict_types=1);
 namespace Xgc\CoreBundle\Paginator;
 
-use Doctrine\DBAL\Query\QueryBuilder;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 class Paginator
 {
     // input
-    protected $repository;
     protected $pageSize;
 
     /**
@@ -20,14 +18,15 @@ class Paginator
     protected $size;
     protected $pages;
     protected $page;
+    protected $currentPage;
 
-    function __construct(EntityRepository $repository, int $pageSize)
+    function __construct(int $pageSize)
     {
-        $this->repository = $repository;
         $this->pageSize = $pageSize;
 
         $this->size = 0;
         $this->pages = 0;
+        $this->currentPage = 0;
         $this->page = [];
     }
 
@@ -38,10 +37,18 @@ class Paginator
 
     public function execute(int $page = 0, array $order = [])
     {
-        $st = $this->query->execute();
-        $this->size = $st->rowCount();
-        $this->pages = round($this->size / $this->pageSize) + 1;
-        $this->page = $st->fetchAll();
+        $this->currentPage = $page;
+        $query = $this->query->getQuery();
+        $query->setMaxResults($this->pageSize);
+        $query->setFirstResult($this->pageSize * $page);
+
+        $this->size = count(new \Doctrine\ORM\Tools\Pagination\Paginator($query));
+        if ($this->size === 0) {
+            $this->pages = 0;
+        } else {
+            $this->pages = (int)round($this->size / $this->pageSize) + 1;
+        }
+        $this->page = $query->getResult();
     }
 
     public function getSize(): int
@@ -57,5 +64,15 @@ class Paginator
     public function getPages(): int
     {
         return $this->pages;
+    }
+
+    public function getCurrentPage(): int
+    {
+        return $this->currentPage;
+    }
+
+    public function getPageSize(): int
+    {
+        return $this->pageSize;
     }
 }
