@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Xgc\CoreBundle\DependencyInjection;
+namespace Xgc\CoreBundle\Repository;
 
 use Xgc\CoreBundle\Paginator\Paginator;
 
