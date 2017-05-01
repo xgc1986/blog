@@ -31,15 +31,13 @@
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{ app.user.avatar }}"
-                                 class="user-image" alt="User Image">
+                            <img src="{{ app.user.avatar }}" class="user-image" alt="User Image">
                             <span class="hidden-xs">{{ app.user.username }}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="{{ app.user.avatar }}"
-                                     class="img-circle" alt="User Image">
+                                <img src="{{ app.user.avatar }}" class="img-circle" alt="User Image">
                                 <p>
                                     {{ app.user.email }}
                                     <small>Miembro desde {{ app.user.createdAt | format_date }}</small>
@@ -94,7 +92,7 @@
                 <div class="callout callout-success">
                     {#}<h4>Tip!</h4>#}
                     {% for flash_message in notices %}
-                        <p>{{ flash_message }}</p>
+                        <p>{{ flash_message|raw }}</p>
                     {% endfor %}
                 </div>
             {% endif %}
@@ -104,7 +102,7 @@
                 <div class="callout callout-danger">
                     {#}<h4>Tip!</h4>#}
                     {% for flash_message in errors %}
-                        <p>{{ flash_message }}</p>
+                        <p>{{ flash_message|raw }}</p>
                     {% endfor %}
                 </div>
             {% endif %}
