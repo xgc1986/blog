@@ -25,27 +25,48 @@
 
                 <div id="login-form" class="login-form">
                     <h1>ENCA Stil</h1>
-                    <form class="well bs-component" action="{{ url('app_api_user_login') }}" data-target="{{ url('admin_user_home_index') }}" method="POST" onsubmit="login.login(event);">
-                        <fieldset>
-                            <div class="form-group  label-floating control-group">
-                                <label class="control-label" for="login-form-username">Usuario</label>
-                                <input class="form-control" id="login-form-username" type="text" name="username" required>
-                                <span class="help-inline error">Usuario o contraseña incorrecta</span>
-                            </div>
 
-                            <div class="form-group label-floating control-group">
-                                <label class="control-label" for="login-form-password">Contraseña</label>
-                                <input class="form-control" id="login-form-password" type="password" name="password" required>
-                                <span class="help-inline error">Usuario o contraseña incorrecta</span>
-                            </div>
-                        </fieldset>
+                    <div class="box box-solid">
+                        <div class="box-body">
+                            <form class="" action="{{ url('app_api_user_login') }}" data-target="{{ url('admin_user_home_index') }}" method="POST" onsubmit="login.login(event);">
+                                <fieldset>
+                                    <div class="form-group  label-floating control-group">
+                                        <label class="control-label" for="login-form-username">Usuario</label>
+                                        <input class="form-control" id="login-form-username" type="text" name="username" required>
+                                        <span class="help-inline error">Usuario o contraseña incorrecta</span>
+                                    </div>
 
-                        <div class="row">
-                            <button class="btn btn-info pull-right">Entrar</button>
+                                    <div class="form-group label-floating control-group">
+                                        <label class="control-label" for="login-form-password">Contraseña</label>
+                                        <input class="form-control" id="login-form-password" type="password" name="password" required>
+                                        <span class="help-inline error">Usuario o contraseña incorrecta</span>
+                                    </div>
+                                </fieldset>
+
+                                <button class="btn btn-info pull-right">Entrar</button>
+
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
+
+                {% if app.user %}
+                    {% if app.user.locked %}
+                        <div class="alert alert-danger ">
+                            <h4><i class="icon fa fa-ban"></i> Cuenta bloqueada</h4>
+                            La cuenta <b>{{ app.user.username }}</b> ha sido bloqueada y no podrá iniciar sesión hasta que el/la administrador/a la vuelva a habilitar
+                        </div>
+                    {% elseif app.user.enabled %}
+                        <div class="alert alert-success">
+                            <h4><i class="icon fa fa-user-circle-o"></i> Sesión iniciada</h4>
+                            <p>El usuario <b>{{ app.user.username }}</b> ha iniciado sesión, puedes entrar o cerrar sesión para entrar con otra cuenta</p>
+                            <p><a href="{{ url('admin_user_home_index') }}"><i class="fa fa-sign-in">&nbsp;</i> Entrar</a></p>
+                            <p><a href="{{ url('admin_user_logout_index') }}"><i class="fa fa-sign-out">&nbsp;</i> Cerrar sesión</a></p>
+                        </div>
+                    {% endif %}
+                {% endif %}
             </div>
+
             <div class="col-lg-3"></div>
 
         </div>
