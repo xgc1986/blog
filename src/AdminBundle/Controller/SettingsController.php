@@ -8,24 +8,19 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Xgc\CoreBundle\Controller\Controller;
 
-class VersionController extends Controller
+class SettingsController extends Controller
 {
 
     /**
-     * @Route("/_version")
+     * @Route("/_settings")
      * @Method("GET")
      * @Template()
      */
     public function indexAction()
     {
-        $versions = Versions::VERSIONS;
-        ksort($versions);
-
-        $selfVersions = $this->getParameter('xgc.versions');
-        ksort($selfVersions);
+        $settings = $this->getDoctrine()->getRepository("AppBundle:Setting")->findBy([], ['key' => 'ASC']);
         return [
-            'versions' => $versions,
-            'selfVersions' => $selfVersions,
+            'settings' => $settings
         ];
     }
 }

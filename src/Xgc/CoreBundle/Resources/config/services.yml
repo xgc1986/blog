@@ -23,6 +23,10 @@ services:
     class: Xgc\CoreBundle\Service\ValidatorService
     arguments: ["@validator"]
 
+  xgc.settings:
+    class: Xgc\CoreBundle\Service\SettingsService
+    arguments: ["@doctrine", "@xgc.validator"]
+
   # Entities
   xgc.entity.user:
     class: Xgc\CoreBundle\Service\UserService

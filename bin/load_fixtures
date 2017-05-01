@@ -28,4 +28,4 @@ fi
 
 php bin/console doctrine:schema:drop --force --env $ENVIRONMENT &&
 php bin/console doctrine:schema:update --force --env $ENVIRONMENT &&
-php bin/console doctrine:fixtures:load -n --env $ENVIRONMENT
+php bin/console doctrine:fixtures:load -n --env $ENVIRONMENT -vvv

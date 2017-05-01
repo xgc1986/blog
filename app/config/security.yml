@@ -64,7 +64,8 @@ security:
     # all
     - { path: ^/login, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
     # admin
-    - { path: ^/version, host: '%host_admin%', roles: [ROLE_DEVELOPER] }
+    - { path: ^/_version, host: '%host_admin%', roles: [ROLE_DEVELOPER] }
+    - { path: ^/_settings, host: '%host_admin%', roles: [ROLE_DEVELOPER] }
     - { path: ^/, host: '%host_admin%', roles: [ROLE_USER] }
     # api
     # web

@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace Xgc\CoreBundle\Service;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Symfony\Component\Validator\Constraints\Date;
 use Xgc\CoreBundle\Entity\Setting;
 use Xgc\CoreBundle\Exception\Settings\InvalidReadSettingException;
 use Xgc\CoreBundle\Exception\Settings\InvalidWriteSettingException;
@@ -20,9 +21,11 @@ class SettingsService
     const DATETIME = "DATETIME";
 
     protected $doctrine;
+    protected $validator;
 
-    function __construct(Registry $doctrine)
+    function __construct(Registry $doctrine, ValidatorService $validator)
     {
+        $this->validator = $validator;
         $this->doctrine = $doctrine;
     }
 
@@ -38,7 +41,7 @@ class SettingsService
 
     public function getInt(string $key, int $default = 0): int
     {
-        return intval($this->load($key, self::INT) ?? $default);
+        return $this->load($key, self::INT) ?? $default;
     }
 
     public function putInt(string $key, int $value): void
@@ -48,7 +51,7 @@ class SettingsService
 
     public function getFloat(string $key, float $default = 0.0): float
     {
-        return floatval($this->load($key, self::FLOAT) ?? $default);
+        return $this->load($key, self::FLOAT) ?? $default;
     }
 
     public function putFloat(string $key, float $value): void
@@ -58,9 +61,7 @@ class SettingsService
 
     public function getBool(string $key, bool $default = false): bool
     {
-        $val = $default? "true" : "false";
-
-        return ($this->load($key, self::BOOL) ?? $val) === "true";
+        return $this->load($key, self::BOOL) ?? $default;
     }
 
     public function putBool(string $key, bool $value): void
@@ -70,7 +71,7 @@ class SettingsService
 
     public function getJson(string $key, array $default = []): array
     {
-        return json_decode($this->load($key, self::JSON) ?? $default, true);
+        return $this->load($key, self::JSON) ?? $default;
     }
 
     public function putJson(string $key, array $value): void
@@ -80,9 +81,7 @@ class SettingsService
 
     public function getDateTime(string $key, DateTime $default = null): DateTime
     {
-        $default = $default ?? new DateTime();
-
-        return DateTime::fromFormat('U', $this->load($key, self::DATETIME) ?? $default);
+        return $this->load($key, self::DATETIME) ?? $default;
     }
 
     public function putDateTime(string $key, DateTime $value): void
@@ -102,10 +101,24 @@ class SettingsService
         return true;
     }
 
+    public function remove(string $key)
+    {
+        $repo = $this->doctrine->getRepository("XgcCoreBundle:Setting");
+        $setting = $repo->findOneBy(['key' => $key]);
+        if ($setting) {
+            $this->doctrine->getManager()->remove($setting);
+        }
+    }
+
+    public function commit()
+    {
+        $this->doctrine->getManager()->flush();
+    }
+
     private function save(string $key, string $type, string $value): void
     {
         $repo = $this->doctrine->getRepository("XgcCoreBundle:Setting");
-        $setting = $repo->findOneBy(['$key' => $key]);
+        $setting = $repo->findOneBy(['key' => $key]);
 
         if ($setting) {
             if ($setting->getType() === $type) {
@@ -119,20 +132,24 @@ class SettingsService
             $setting->setType($type);
             $setting->setValue($value);
 
+            $this->validator->validate($setting);
             $this->doctrine->getManager()->persist($setting);
         }
-
-        $this->doctrine->getManager()->flush();
     }
 
-    private function load(string $key, string $type): string
+    /**
+     * @param string $key
+     * @param string $type
+     * @return string|int|bool|float|DateTime|array
+     */
+    private function load(string $key, string $type)
     {
         $repo = $this->doctrine->getRepository("XgcCoreBundle:Setting");
-        $setting = $repo->findOneBy(['$key' => $key]);
+        $setting = $repo->findOneBy(['key' => $key]);
 
         if ($setting) {
             if ($setting->getType() === $type) {
-                return $setting->getValue();
+                return $setting->getRealValue();
             } else {
                 throw new InvalidReadSettingException($key, $setting->getType());
             }

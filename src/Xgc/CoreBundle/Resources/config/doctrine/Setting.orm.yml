@@ -2,8 +2,9 @@ Xgc\CoreBundle\Entity\Setting:
   type: mappedSuperclass
   fields:
     key:
+      column: _key
       type: string
-      length: 16
+      length: 32
       unique: true
     type:
       type: string

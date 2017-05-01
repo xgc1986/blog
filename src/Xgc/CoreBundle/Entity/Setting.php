@@ -3,6 +3,8 @@ declare(strict_types=1);
 namespace Xgc\CoreBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Xgc\CoreBundle\Service\SettingsService;
+use Xgc\UtilsBundle\Helper\DateTime;
 
 class Setting extends Entity
 {
@@ -10,7 +12,7 @@ class Setting extends Entity
      * @var string
      * @Assert\Length(
      *     min = 1,
-     *     max = 16
+     *     max = 32
      * )
      */
     protected $key;
@@ -86,6 +88,36 @@ class Setting extends Entity
     public function getValue(): string
     {
         return $this->value;
+    }
+
+    /**
+     * @return string|int|bool|float|DateTime|array
+     */
+    public function getRealValue()
+    {
+        if ($this->type == SettingsService::DATETIME) {
+            return DateTime::fromFormat('U', $this->value);
+        }
+
+        if ($this->type == SettingsService::STRING) {
+            return $this->value;
+        }
+
+        if ($this->type == SettingsService::INT) {
+            return intval($this->value);
+        }
+
+        if ($this->type == SettingsService::FLOAT) {
+            return floatval($this->value);
+        }
+
+        if ($this->type == SettingsService::JSON) {
+            return json_decode($this->value, true);
+        }
+
+        if ($this->type == SettingsService::BOOL) {
+            return $this->value === "true";
+        }
     }
 
     /**
