@@ -20,18 +20,6 @@
     <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
 
-    {% if app.environment == 'dev' %}
-        {% javascripts filter="?jsqueeze" output="js/router.js"
-        '@AdminBundle/Resources/public/js/router_dev.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-    {% else %}
-        {% javascripts filter="?jsqueeze" output="js/router.js"
-        '@AdminBundle/Resources/public/js/router_prod.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-    {% endif %}
-
     {% javascripts filter="?jsqueeze" output="js/index.js"
     '@XgcCoreBundle/Resources/public/js/main.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>

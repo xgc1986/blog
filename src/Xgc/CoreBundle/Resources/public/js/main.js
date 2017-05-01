@@ -1,9 +1,10 @@
+'use strict';
 /**
  * Overrides
  */
 
 String.prototype.replaceAll = function(search, replacement) {
-    var target = this;
+    let target = this;
     return target.split(search).join(replacement);
 };
 
@@ -32,14 +33,14 @@ HTMLFormElement.prototype._submit = function(event, onSuccess, onFailure, preSub
     onSuccess = (onSuccess || function() {}).bind(this);
     onFailure = (onFailure || function() {}).bind(this);
 
-    var inputs = this._tag('input').concat(this._tag('select'));
+    let inputs = this._tag('input').concat(this._tag('select'));
 
-    var params = [];
+    let params = [];
 
-    if (this == "GET") {
+    if (this.method === "GET") {
 
-        for (var i = 0; i < inputs.length; i++) {
-            if (inputs[i].type != 'file') {
+        for (let i = 0; i < inputs.length; i++) {
+            if (inputs[i].type !== 'file') {
                 params[inputs[i].name] = inputs[i].value;
             }
         }
@@ -47,7 +48,7 @@ HTMLFormElement.prototype._submit = function(event, onSuccess, onFailure, preSub
         params = new FormData(this);
     }
 
-    Nakima[this.method.toLowerCase()](this.action, params, onSuccess, onFailure, preSubmit, postSubmit);
+    Request[this.method.toLowerCase()](this.action, params, onSuccess, onFailure, preSubmit, postSubmit);
 };
 
 HTMLButtonElement.prototype._submit = HTMLInputElement.prototype._submit = function(event, onSuccess, onFailure, preSubmit, postSubmit) {
@@ -59,7 +60,7 @@ HTMLButtonElement.prototype._submit = HTMLInputElement.prototype._submit = funct
 };
 
 HTMLCollection.prototype.forEach = function(cb) {
-    for (var i = 0; i < this.length; i++) {
+    for (let i = 0; i < this.length; i++) {
         cb(this[i]);
     }
 
@@ -68,14 +69,13 @@ HTMLCollection.prototype.forEach = function(cb) {
 
 HTMLCollection.prototype.concat = function(other) {
 
-    var ret = [];
-    var i = 0;
+    let ret = [];
 
-    for (i = 0; i < this.length; i++) {
+    for (let i = 0; i < this.length; i++) {
         ret.push(this[i]);
     }
 
-    for (i = 0; i < other.length; i++) {
+    for (let i = 0; i < other.length; i++) {
         ret.push(other[i]);
     }
 
@@ -95,12 +95,12 @@ function _tag(tag) {
 }
 
 /**
- * Nakima
+ * Request
  */
 
-var Nakima = {};
+let Request = {};
 
-Nakima.get = function (path, params, onSuccess, onFailure, preRequest, postRequest) {
+Request.get = function (path, params, onSuccess, onFailure, preRequest, postRequest) {
     params = params || {};
 
     preRequest = (preRequest || function() {return true;}).bind(this);
@@ -112,9 +112,9 @@ Nakima.get = function (path, params, onSuccess, onFailure, preRequest, postReque
         return false;
     }
 
-    var first = 0;
-    var _params = "";
-    for (var param in params) {
+    let first = 0;
+    let _params = "";
+    for (let param in params) {
         if (!first) {
             _params += "&";
         }
@@ -122,7 +122,7 @@ Nakima.get = function (path, params, onSuccess, onFailure, preRequest, postReque
         _params += param + "=" + params[param];
     }
 
-    var http = new XMLHttpRequest();
+    let http = new XMLHttpRequest();
     http.withCredentials = true;
     http.open("GET", path + "?" + _params, true);
 
@@ -131,11 +131,11 @@ Nakima.get = function (path, params, onSuccess, onFailure, preRequest, postReque
     }
 
     http.onreadystatechange = function() {
-        if (http.readyState == 4 && http.status == 200) {
+        if (http.readyState === 4 && http.status === 200) {
             console.log(JSON.parse(http.response));
             onSuccess(http);
             postRequest(http);
-        } else if (http.readyState == 4) {
+        } else if (http.readyState === 4) {
             onFailure(http);
             postRequest(http);
         }
@@ -143,7 +143,7 @@ Nakima.get = function (path, params, onSuccess, onFailure, preRequest, postReque
     http.send();
 };
 
-Nakima.delete = function (path, params, onSuccess, onFailure, preRequest, postRequest) {
+Request.delete = function (path, params, onSuccess, onFailure, preRequest, postRequest) {
     params = params || {};
 
     preRequest = (preRequest || function() {return true;}).bind(this);
@@ -157,9 +157,9 @@ Nakima.delete = function (path, params, onSuccess, onFailure, preRequest, postRe
 
     params._method = params._method || "DELETE";
 
-    var first = 0;
-    var _params = "";
-    for (var param in params) {
+    let first = 0;
+    let _params = "";
+    for (let param in params) {
         if (!first) {
             _params += "&";
         }
@@ -167,7 +167,7 @@ Nakima.delete = function (path, params, onSuccess, onFailure, preRequest, postRe
         _params += param + "=" + params[param];
     }
 
-    var http = new XMLHttpRequest();
+    let http = new XMLHttpRequest();
     http.withCredentials = true;
     http.open("DELETE", path + "?" + _params, true);
 
@@ -176,11 +176,11 @@ Nakima.delete = function (path, params, onSuccess, onFailure, preRequest, postRe
     }
 
     http.onreadystatechange = function() {
-        if (http.readyState == 4 && http.status == 200) {
+        if (http.readyState === 4 && http.status === 200) {
             console.log(JSON.parse(http.response));
             onSuccess(http);
             postRequest(http);
-        } else if (http.readyState == 4) {
+        } else if (http.readyState === 4) {
             onFailure(http);
             postRequest(http);
         }
@@ -188,7 +188,7 @@ Nakima.delete = function (path, params, onSuccess, onFailure, preRequest, postRe
     http.send();
 };
 
-Nakima.post = function (path, params, onSuccess, onFailure, preRequest, postRequest) {
+Request.post = function (path, params, onSuccess, onFailure, preRequest, postRequest) {
     params = params || {};
 
     preRequest = (preRequest || function() {return true;}).bind(this);
@@ -211,11 +211,11 @@ Nakima.post = function (path, params, onSuccess, onFailure, preRequest, postRequ
     }
 
     http.onreadystatechange = function() {
-        if (http.readyState == 4 && http.status == 200) {
+        if (http.readyState === 4 && http.status === 200) {
             console.log(JSON.parse(http.response));
             onSuccess(http);
             postRequest(http);
-        } else if (http.readyState == 4) {
+        } else if (http.readyState === 4) {
             onFailure(http);
             postRequest(http);
         }
@@ -223,7 +223,7 @@ Nakima.post = function (path, params, onSuccess, onFailure, preRequest, postRequ
     http.send(params);
 };
 
-Nakima.put = function (path, params, onSuccess, onFailure, preRequest, postRequest) {
+Request.put = function (path, params, onSuccess, onFailure, preRequest, postRequest) {
     params = params || new FormData();
     params.append("_method", "PUT");
 
@@ -236,7 +236,7 @@ Nakima.put = function (path, params, onSuccess, onFailure, preRequest, postReque
         return false;
     }
 
-    var http = new XMLHttpRequest();
+    let http = new XMLHttpRequest();
     http.withCredentials = true;
 
     http.open("POST", path, true);
@@ -247,11 +247,11 @@ Nakima.put = function (path, params, onSuccess, onFailure, preRequest, postReque
     }
 
     http.onreadystatechange = function() {
-        if (http.readyState == 4 && http.status == 200) {
+        if (http.readyState === 4 && http.status === 200) {
             console.log(JSON.parse(http.response));
             onSuccess(http);
             postRequest(http);
-        } else if (http.readyState == 4) {
+        } else if (http.readyState === 4) {
             onFailure(http);
             postRequest(http);
         }
@@ -262,7 +262,7 @@ Nakima.put = function (path, params, onSuccess, onFailure, preRequest, postReque
 
 (function() {
 
-    var map;
+    let map;
 
     Location.prototype.getQueryParam = function(key, def) {
         map = map || this.getQueryParams();
@@ -270,13 +270,13 @@ Nakima.put = function (path, params, onSuccess, onFailure, preRequest, postReque
     };
 
     Location.prototype.getQueryParams = function() {
-        var result = null;
-        var tmp = [];
+        let result = null;
+        let tmp = [];
         map = [];
 
         location.search.substr(1)
         .split("&")
-        .forEach(function (item) {
+        .forEach(function (item, key) {
                 tmp = item.split("=");
 
                 if (tmp[0].endsWith("[]")) {
@@ -319,16 +319,16 @@ Nakima.put = function (path, params, onSuccess, onFailure, preRequest, postReque
 
     Location.prototype.generateQuery = function() {
         map = map || this.getQueryParams();
-        var str = "";
-        var first = true;
+        let str = "";
+        let first = true;
 
-        for (var i in map) {
+        for (let i in map) {
             if (!first) {
                 str += "&";
             }
             first = false;
             if (Array.isArray(map[i])) {
-                for (var j in map) {
+                for (let j in map) {
                     str += i + "[]=" + map[j];
                 }
             } else {

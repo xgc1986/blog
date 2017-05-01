@@ -25,7 +25,7 @@
 
                 <div id="login-form" class="login-form">
                     <h1>ENCA Stil</h1>
-                    <form class="well bs-component" action="{{ url('app_api_user_login') }}" method="POST" onsubmit="login.login(event);">
+                    <form class="well bs-component" action="{{ url('app_api_user_login') }}" data-target="{{ url('admin_user_home_index') }}" method="POST" onsubmit="login.login(event);">
                         <fieldset>
                             <div class="form-group  label-floating control-group">
                                 <label class="control-label" for="login-form-username">Usuario</label>

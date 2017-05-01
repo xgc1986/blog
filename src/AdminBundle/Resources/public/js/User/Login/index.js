@@ -24,7 +24,7 @@
 
       event.target._submit(event,
           (data, http) => {
-            location.href = router.get('admin', 'home');
+            location.href = this.form._tag('form')[0].dataset.target;
           },
 
           (error) => {
