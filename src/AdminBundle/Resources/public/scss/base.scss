@@ -25,3 +25,12 @@ td.fit {
 .table > tbody > tr > td {
   vertical-align: inherit
 }
+
+.table > tbody > tr > td.input {
+  vertical-align: baseline;
+}
+
+.table > tbody > tr > th.input {
+  vertical-align: baseline;
+}
+
