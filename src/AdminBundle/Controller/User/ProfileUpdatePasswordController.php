@@ -4,6 +4,7 @@ namespace AdminBundle\Controller\User;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Xgc\CoreBundle\Controller\Controller;
 use Xgc\CoreBundle\Exception\HttpException;
@@ -13,6 +14,7 @@ class ProfileUpdatePasswordController extends Controller
     /**
      * @Route("/profile/password")
      * @Method("GET")
+     * @Security("has_role('ROLE_USER')")
      * @Template()
      */
     public function indexAction()
@@ -22,6 +24,7 @@ class ProfileUpdatePasswordController extends Controller
 
     /**
      * @Route("/profile/password/update")
+     * @Security("has_role('ROLE_USER')")
      * @Method({"POST"})
      */
     public function updateAction()

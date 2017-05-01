@@ -4,6 +4,7 @@ namespace AdminBundle\Controller\User;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Xgc\CoreBundle\Controller\Controller;
 use Xgc\CoreBundle\Exception\HttpException;
@@ -14,6 +15,7 @@ class ProfileAvatarController extends Controller
     /**
      * @Route("/profile/avatar")
      * @Method("GET")
+     * @Security("has_role('ROLE_USER')")
      * @Template()
      */
     public function indexAction()
