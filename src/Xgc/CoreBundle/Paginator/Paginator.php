@@ -37,7 +37,7 @@ class Paginator
         $this->query = $query;
     }
 
-    public function execute(int $page = 0, array $order = [])
+    public function execute(int $page = 0)
     {
         $this->currentPage = $page;
         $query = $this->query->getQuery();

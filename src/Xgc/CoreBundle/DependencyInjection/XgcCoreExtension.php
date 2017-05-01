@@ -1,6 +1,5 @@
 <?php
 declare(strict_types=1);
-
 namespace Xgc\CoreBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
