@@ -25,6 +25,8 @@ class AppKernel extends Kernel
             new Gos\Bundle\WebSocketBundle\GosWebSocketBundle(),
             new Gos\Bundle\PubSubRouterBundle\GosPubSubRouterBundle(),
 
+            new IAkumaI\SphinxsearchBundle\SphinxsearchBundle(),
+
             new Xgc\CoreBundle\XgcCoreBundle(),
             new Xgc\AdminLTEBundle\XgcAdminLTEBundle(),
             new AppBundle\AppBundle(),
