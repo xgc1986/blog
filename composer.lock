@@ -4062,16 +4062,16 @@
     "packages-dev": [
         {
             "name": "dama/doctrine-test-bundle",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dmaicher/doctrine-test-bundle.git",
-                "reference": "2b8911cb919c42d17a0ccbddd1947d10e57ba2d6"
+                "reference": "21bc7ab0b3a2e6c2393e97a043f6678750b074ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dmaicher/doctrine-test-bundle/zipball/2b8911cb919c42d17a0ccbddd1947d10e57ba2d6",
-                "reference": "2b8911cb919c42d17a0ccbddd1947d10e57ba2d6",
+                "url": "https://api.github.com/repos/dmaicher/doctrine-test-bundle/zipball/21bc7ab0b3a2e6c2393e97a043f6678750b074ac",
+                "reference": "21bc7ab0b3a2e6c2393e97a043f6678750b074ac",
                 "shasum": ""
             },
             "require": {
@@ -4112,7 +4112,7 @@
                 "symfony 2",
                 "tests"
             ],
-            "time": "2017-03-05T13:59:35+00:00"
+            "time": "2017-05-03T07:50:32+00:00"
         },
         {
             "name": "doctrine/data-fixtures",

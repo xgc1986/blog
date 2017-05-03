@@ -72,11 +72,21 @@ swiftmailer:
   password:  "%mailer_password%"
   spool:     { type: memory }
 
-xgc:
+xgc_core:
   exceptions:
     -
       host: "%host_api%"
       handler: "Xgc\\CoreBundle\\Exception\\ApiExceptionHandler"
+
+xgc_sphinx:
+    conf: "%kernel.root_dir%/config/sphinx/sphinx.conf"
+    bin: ~
+
+    #searchd:
+        #host: localhost
+        #port: 9312
+    #indexes:
+        #test1: "AppBundle:Commercial"
 
 old_sound_rabbit_mq:
   connections:

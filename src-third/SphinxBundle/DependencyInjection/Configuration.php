@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Xgc\CoreBundle\DependencyInjection;
+namespace Xgc\SphinxBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -18,21 +18,23 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('xgc_core');
+        $rootNode = $treeBuilder->root('xgc_sphinx');
 
         $rootNode
             ->children()
-                ->arrayNode('exceptions')
-                    ->prototype('array')
-                        ->children()
-                            ->scalarNode('host')->end()
-                            ->scalarNode('handler')->end()
-                        ->end()
+                ->scalarNode('bin')->defaultValue('')->end()
+                ->scalarNode('conf')->defaultValue('')->end()
+                ->arrayNode('searchd')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('host')->defaultValue('localhost')->end()
+                        ->scalarNode('port')->defaultValue('9312')->end()
+                        ->scalarNode('socket')->defaultNull()->end()
                     ->end()
                 ->end()
-                ->arrayNode('versions')
-                    ->useAttributeAsKey('name')
-                    ->prototype('scalar')
+                ->arrayNode('indexes')
+                    ->useAttributeAsKey('key')
+                        ->prototype('scalar')->end()
                     ->end()
                 ->end()
             ->end()

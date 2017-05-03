@@ -1,0 +1,21 @@
+services:
+    xgc.sphinx.search:
+        class: Xgc\SphinxBundle\Search\Sphinx
+        file:  '%xgc.sphinx.api_file%'
+        arguments:
+            - '%xgc.sphinx.searchd.host%'
+            - '%xgc.sphinx.searchd.port%'
+            - '%xgc.sphinx.searchd.socket%'
+        calls:
+            - [setBridge, ["@xgc.sphinx.bridge"]]
+
+    xgc.sphinx.bridge:
+        class: Xgc\SphinxBundle\Doctrine\Bridge
+        arguments: ["@doctrine", '%xgc.sphinx.indexes%']
+
+    # Twig extension
+    xgc.sphinx.twig_extension:
+        class: Xgc\SphinxBundle\Twig\SphinxTwigExtension
+        arguments: ["@xgc.sphinx.search"]
+        tags:
+            - {name: twig.extension}

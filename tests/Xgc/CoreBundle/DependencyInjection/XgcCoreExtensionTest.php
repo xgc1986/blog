@@ -26,7 +26,7 @@ class XgcCoreExtensionTest extends TestCase
      */
     public function testGetAlias(Extension $extension)
     {
-        self::assertEquals('xgc', $extension->getAlias());
+        self::assertEquals('xgc_core', $extension->getAlias());
     }
 
     /**

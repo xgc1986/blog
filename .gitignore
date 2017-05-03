@@ -91,3 +91,4 @@ fabric.properties
 web/css
 web/js
 web/images
+/app/config/sphinx/sphinx.conf

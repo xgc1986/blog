@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Xgc\CoreBundle\DependencyInjection;
+namespace Xgc\SphinxBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * @link http://symfony.com/doc/current/cookbook/bundles/extension.html
  */
-class XgcCoreExtension extends Extension
+class XgcSphinxExtension extends Extension
 {
     /**
      * {@inheritdoc}
@@ -22,16 +22,25 @@ class XgcCoreExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $configuration = new Configuration();
+
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter("xgc.exceptions", $config['exceptions']);
-        $container->setParameter("xgc.versions", $config['versions']);
+        $container->setParameter("xgc.sphinx.bin", $config['bin']);
+        $container->setParameter("xgc.sphinx.conf", $config['conf']);
+
+        $container->setParameter('xgc.sphinx.searchd.host', $config['searchd']['host']);
+        $container->setParameter('xgc.sphinx.searchd.port', $config['searchd']['port']);
+        $container->setParameter('xgc.sphinx.searchd.socket', $config['searchd']['socket']);
+
+        $container->setParameter('xgc.sphinx.indexes', $config['indexes']);
+
+        $container->setParameter('xgc.sphinx.api_file', __DIR__ . '/../Sphinx/SphinxAPI.php');
 
         $loader->load('services.yml');
     }
 
     public function getAlias()
     {
-        return 'xgc_core';
+        return 'xgc_sphinx';
     }
 }
