@@ -2,6 +2,7 @@ imports:
   - { resource: parameters.yml }
   - { resource: security.yml }
   - { resource: services.yml }
+  - { resource: xgc.yml }
   - { resource: "@WebBundle/Resources/config/services.yml" }
   - { resource: "@AdminBundle/Resources/config/services.yml" }
   - { resource: "@XgcCoreBundle/Resources/config/config.yml" }
@@ -71,22 +72,6 @@ swiftmailer:
   username:  "%mailer_user%"
   password:  "%mailer_password%"
   spool:     { type: memory }
-
-xgc_core:
-  exceptions:
-    -
-      host: "%host_api%"
-      handler: "Xgc\\CoreBundle\\Exception\\ApiExceptionHandler"
-
-xgc_sphinx:
-    conf: "%kernel.root_dir%/config/sphinx/sphinx.conf"
-    bin: ~
-
-    #searchd:
-        #host: localhost
-        #port: 9312
-    #indexes:
-        #test1: "AppBundle:Commercial"
 
 old_sound_rabbit_mq:
   connections:

@@ -30,6 +30,7 @@ class AppKernel extends Kernel
             new Xgc\CoreBundle\XgcCoreBundle(),
             new Xgc\AdminLTEBundle\XgcAdminLTEBundle(),
             new Xgc\SphinxBundle\XgcSphinxBundle(),
+            new Xgc\InfluxBundle\XgcInfluxBundle(),
             new AppBundle\AppBundle(),
             new WebBundle\WebBundle(),
             new AdminBundle\AdminBundle(),

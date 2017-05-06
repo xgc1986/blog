@@ -1,0 +1,22 @@
+xgc_core:
+  exceptions:
+    -
+      host: "%host_api%"
+      handler: "Xgc\\CoreBundle\\Exception\\ApiExceptionHandler"
+
+xgc_sphinx:
+    conf: "%kernel.root_dir%/config/sphinx/sphinx.conf"
+    bin: ~
+
+    #searchd:
+        #host: localhost
+        #port: 9312
+    #indexes:
+        #test1: "AppBundle:Commercial"
+
+xgc_influx:
+    host: localhost
+    user: user
+    pass: pass
+    database: ~
+    port: 8086
