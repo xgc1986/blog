@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace Xgc\CoreBundle\Service;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\RememberMeToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -23,6 +24,7 @@ use Xgc\UtilsBundle\Helper\Text;
 
 class SecurityService
 {
+    protected $container;
     protected $doctrine;
     protected $request;
     protected $tokenStorage;
@@ -32,6 +34,7 @@ class SecurityService
 
 
     public function __construct(
+        ContainerInterface $container,
         Registry $doctrine,
         RequestService $request,
         TokenStorage $tokenStorage,
@@ -39,6 +42,7 @@ class SecurityService
         UserPasswordEncoderInterface $encoder,
         String $secret
     ) {
+        $this->container = $container;
         $this->doctrine = $doctrine;
         $this->request = $request;
         $this->tokenStorage = $tokenStorage;
@@ -132,7 +136,12 @@ class SecurityService
             throw new PreconditionFailedException("Passwords missmatch");
         }
 
-        if (!Text::validatePassword($password, 8, true, true, true, false)) {
+        $minLength = $this->container->getParameter('xgc.security.password.minlength');
+        $symbols = $this->container->getParameter('xgc.security.password.symbols');
+        $numbers = $this->container->getParameter('xgc.security.password.numbers');
+        $uppercases = $this->container->getParameter('xgc.security.password.uppercases');
+
+        if (!Text::validatePassword($password, $minLength, true, $numbers, $uppercases, $symbols)) {
             throw new InvalidParamException('password', "Password insecure");
         }
 
@@ -171,7 +180,12 @@ class SecurityService
             throw new PreconditionFailedException("Passwords missmatch");
         }
 
-        if (!Text::validatePassword($password, 8, true, true, true, false)) {
+        $minLength = $this->container->getParameter('xgc.security.password.minlength');
+        $symbols = $this->container->getParameter('xgc.security.password.symbols');
+        $numbers = $this->container->getParameter('xgc.security.password.numbers');
+        $uppercases = $this->container->getParameter('xgc.security.password.uppercases');
+
+        if (!Text::validatePassword($password, $minLength, true, $numbers, $uppercases, $symbols)) {
             throw new InvalidParamException('password', "Password insecure");
         }
 
@@ -282,6 +296,15 @@ class SecurityService
 
         if (!$user) {
             throw new AccessDeniedException();
+        }
+
+        $minLength = $this->container->getParameter('xgc.security.password.minlength');
+        $symbols = $this->container->getParameter('xgc.security.password.symbols');
+        $numbers = $this->container->getParameter('xgc.security.password.numbers');
+        $uppercases = $this->container->getParameter('xgc.security.password.uppercases');
+
+        if (!Text::validatePassword($password, $minLength, true, $numbers, $uppercases, $symbols)) {
+            throw new InvalidParamException('password', "Password insecure");
         }
 
         $password = $this->encoder->encodePassword($user, $password);

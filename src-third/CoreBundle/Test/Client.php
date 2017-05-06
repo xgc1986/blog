@@ -124,7 +124,7 @@ class Client
         }
     }
 
-    public function getResponse()
+    public function getResponse(): array
     {
         return $this->parsedResponse;
     }

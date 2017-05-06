@@ -28,28 +28,4 @@ class XgcCoreExtensionTest extends TestCase
     {
         self::assertEquals('xgc_core', $extension->getAlias());
     }
-
-    /**
-     * @depends testConstruct
-     * @param Extension $extension
-     */
-    public function testLoad(Extension $extension)
-    {
-        $config = [
-            'xgc' => [
-                'exceptions' => [
-                    [
-                        'host'    => 'api.localhost',
-                        'handler' => 'Xgc\CoreBundle\Exception\ApiExceptionHandler',
-                    ],
-                ],
-            ],
-        ];
-
-        $containerBuilder = new ContainerBuilder;
-        $extension->load($config, $containerBuilder);
-        $param = $containerBuilder->getParameter('xgc.exceptions');
-
-        self::assertEquals($config['xgc']['exceptions'], $param);
-    }
 }

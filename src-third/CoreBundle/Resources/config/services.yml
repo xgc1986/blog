@@ -7,7 +7,7 @@ services:
 
   xgc.security:
     class: Xgc\CoreBundle\Service\SecurityService
-    arguments: ["@doctrine", "@xgc.request", "@security.token_storage", "@event_dispatcher", "@security.password_encoder","%secret%"]
+    arguments: ["@service_container","@doctrine", "@xgc.request", "@security.token_storage", "@event_dispatcher", "@security.password_encoder","%secret%"]
 
   xgc.request:
     class: Xgc\CoreBundle\Service\RequestService

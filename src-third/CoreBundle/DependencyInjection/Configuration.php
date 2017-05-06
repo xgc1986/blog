@@ -35,6 +35,18 @@ class Configuration implements ConfigurationInterface
                     ->prototype('scalar')
                     ->end()
                 ->end()
+                ->arrayNode('security')
+                    ->children()
+                        ->arrayNode('password')
+                            ->children()
+                                ->booleanNode('symbols')->defaultFalse()->end()
+                                ->booleanNode('numbers')->defaultFalse()->end()
+                                ->booleanNode('uppercases')->defaultFalse()->end()
+                                ->integerNode('min_length')->min(4)->defaultValue(8)->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
         ;
 

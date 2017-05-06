@@ -5,22 +5,11 @@ namespace Xgc\CoreBundle\Service;
 use Intervention\Image\ImageManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Security\Core\Authentication\Token\RememberMeToken;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-use Symfony\Component\Security\Http\SecurityEvents;
 use Xgc\CoreBundle\Entity\User;
-use Xgc\CoreBundle\Exception\Http\AccessDeniedException;
-use Xgc\CoreBundle\Exception\Http\AccountBeingCreatedException;
-use Xgc\CoreBundle\Exception\Http\AccountDissabledException;
 use Xgc\CoreBundle\Exception\Http\InvalidParamException;
-use Xgc\CoreBundle\Exception\Http\PreconditionFailedException;
 use Xgc\CoreBundle\Exception\Http\RequestBodyTooLargeException;
-use Xgc\CoreBundle\Exception\Http\ResourceNoLongerAvailableException;
-use Xgc\CoreBundle\Exception\Http\ResourceNotFoundException;
 use Xgc\CoreBundle\Exception\Http\UnsupportedMediaTypeException;
 use Xgc\CoreBundle\Helper\SymfonyHelper;
-use Xgc\UtilsBundle\Helper\DateTime;
 use Xgc\UtilsBundle\Helper\File as FileHelper;
 use Xgc\UtilsBundle\Helper\Text;
 
@@ -33,11 +22,21 @@ class UserService
         $this->container = $container;
     }
 
-    public function setPassword(User $user, string $password, string $salt = '') {
+    public function setPassword(User $user, string $password)
+    {
 
         $encoder = $this->container->get('security.password_encoder');
 
-        $password = $encoder->encodePassword($user, $password, $salt);
+        $minLength = $this->container->getParameter('xgc.security.password.minlength');
+        $symbols = $this->container->getParameter('xgc.security.password.symbols');
+        $numbers = $this->container->getParameter('xgc.security.password.numbers');
+        $uppercases = $this->container->getParameter('xgc.security.password.uppercases');
+
+        if (!Text::validatePassword($password, $minLength, true, $numbers, $uppercases, $symbols)) {
+            throw new InvalidParamException('password', "Password insecure");
+        }
+
+        $password = $encoder->encodePassword($user, $password);
         $user->setPassword($password);
 
         return $user;

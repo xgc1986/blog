@@ -22,6 +22,7 @@ class RegisterControllerTest extends WebTestCase
                 'password2' => '123qweQWE',
             ]
         );
+
         $user->check(200);
     }
 

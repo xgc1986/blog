@@ -5,9 +5,9 @@ namespace Xgc\InfluxBundle\Annotation;
 /**
  * @Annotation
  */
-class InfluxEntity
+class Registry
 {
-    private $name;
+    private $propertyName;
 
     public function __construct($options)
     {
@@ -23,5 +23,10 @@ class InfluxEntity
 
             $this->$key = $value;
         }
+    }
+
+    public function getPropertyName()
+    {
+        return $this->propertyName;
     }
 }

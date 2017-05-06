@@ -23,7 +23,7 @@ class SecurityServiceTest extends KernelTestCase
         $encoder = self::$kernel->getContainer()->get('security.password_encoder');
         $secret = self::$kernel->getContainer()->getParameter('secret');
 
-        $service = new SecurityService($doctrine, $request, $token, $event, $encoder, $secret);
+        $service = new SecurityService(self::$kernel->getContainer(), $doctrine, $request, $token, $event, $encoder, $secret);
 
         self::assertTrue(true);
 
