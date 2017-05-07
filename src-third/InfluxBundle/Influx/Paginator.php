@@ -66,4 +66,20 @@ class Paginator
     {
         return $this->size;
     }
+
+    /**
+     * @return bool
+     */
+    public function isHasNext(): bool
+    {
+        return $this->hasNext;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHasPrevious(): bool
+    {
+        return $this->hasPrevious;
+    }
 }
