@@ -4,8 +4,9 @@ namespace Xgc\InfluxBundle\Annotation;
 
 /**
  * @Annotation
+ * @Target("CLASS")
  */
-class Registry
+class Measurement
 {
     private $propertyName;
 

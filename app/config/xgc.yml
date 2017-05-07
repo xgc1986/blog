@@ -1,8 +1,18 @@
 xgc_core:
-  exceptions:
-    -
-      host: "%host_api%"
-      handler: "Xgc\\CoreBundle\\Exception\\ApiExceptionHandler"
+    exceptions:
+        -
+            host: "%host_api%"
+            handler: "Xgc\\CoreBundle\\Exception\\ApiExceptionHandler"
+
+    versions:
+        base: 0.0.8.6
+
+    security:
+        password:
+            symbols: false
+            numbers: true
+            uppercases: true
+            min_length: 8
 
 xgc_sphinx:
     conf: "%kernel.root_dir%/config/sphinx/sphinx.conf"
@@ -18,5 +28,5 @@ xgc_influx:
     host: localhost
     user: user
     pass: pass
-    database: ~
+    database: base_test
     port: 8086

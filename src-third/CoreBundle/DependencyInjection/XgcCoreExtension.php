@@ -26,7 +26,7 @@ class XgcCoreExtension extends Extension
 
         $container->setParameter("xgc.exceptions", $config['exceptions']);
         $container->setParameter("xgc.versions", $config['versions']);
-var_dump($config);
+
         $container->setParameter("xgc.security.password.symbols", $config['security']['password']['symbols']);
         $container->setParameter("xgc.security.password.numbers", $config['security']['password']['numbers']);
         $container->setParameter("xgc.security.password.uppercases", $config['security']['password']['uppercases']);

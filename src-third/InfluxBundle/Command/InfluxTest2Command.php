@@ -3,11 +3,16 @@ declare(strict_types=1);
 namespace Xgc\InfluxBundle\Command;
 
 use AppBundle\Entity\Log;
+use DateTimeZone;
+use InfluxDB\Database;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Xgc\InfluxBundle\Annotation\MeasurementReader;
+use Xgc\InfluxBundle\Influx\Point;
+use Xgc\UtilsBundle\Helper\DateTime;
 
-class InfluxTestCommand extends ContainerAwareCommand
+class InfluxTest2Command extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -15,7 +20,7 @@ class InfluxTestCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('xgc:influx:test')
+            ->setName('xgc:influx:test2')
             ->setDescription('Hello PhpStorm');
     }
 
@@ -26,19 +31,6 @@ class InfluxTestCommand extends ContainerAwareCommand
     {
         $influx = $this->getContainer()->get('xgc.influx');
 
-        $length = 10;
-        $ps = [];
-
-        for ($i = 0; $i < $length; $i++) {
-            $ps[] = new Log();
-        }
-        for ($i = 0; $i < $length; $i++) {
-            $ps[$i]->setLevel("warning");
-            $ps[$i]->setUsername('d');
-            $ps[$i]->setTag('warning_log');
-            $ps[$i]->setMessage('testing_logs');
-        }
-
-        $influx->write($ps);
+        dump($influx->read(Log::class, [], null, null, false, 1, 0));
     }
 }

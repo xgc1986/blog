@@ -22,11 +22,11 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('host')->defaultValue('localhost')->end()
+                ->scalarNode('host')->defaultValue('localhostsdfg')->end()
                 ->scalarNode('user')->defaultValue('influx')->end()
                 ->scalarNode('pass')->defaultValue('influx')->end()
+                ->integerNode('port')->defaultValue('8086')->end()
                 ->scalarNode('database')->defaultValue('symfony')->end()
-                ->scalarNode('port')->defaultValue('8086')->end()
             ->end()
         ;
 

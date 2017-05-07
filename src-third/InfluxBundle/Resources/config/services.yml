@@ -1,0 +1,5 @@
+services:
+    xgc.influx:
+        class: Xgc\InfluxBundle\Service\InfluxService
+        arguments:
+            - '@service_container'

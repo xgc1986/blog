@@ -8,7 +8,7 @@ use Xgc\UtilsBundle\Helper\JSON;
 /*
  * @Measurement('my_measurement')
  */
-abstract class InfluxEntity implements JSON
+abstract class MeasurementEntity implements JSON
 {
     /*
 
@@ -42,28 +42,33 @@ abstract class InfluxEntity implements JSON
      */
     protected $timeStamp;
 
+    public function __construct(?DateTime $date = null)
+    {
+        $this->timeStamp = $date ?? new DateTime();
+    }
+
     public function __toArray(): array
     {
         return [
-            'id' => $this->getId(),
+            'id'        => $this->getId(),
             'timeStamp' => $this->getTimeStamp()->format('U'),
-            'fields' => [],
-            'tags' => []
+            'fields'    => [],
+            'tags'      => [],
         ];
-    }
-
-    public function __getType(): string
-    {
-        // TODO
     }
 
     public function getId(): int
     {
-        $this->getTimeStamp()->getTime();
+        return $this->getTimeStamp()->getTime();
     }
 
     public function getTimeStamp(): DateTime
     {
         return new DateTime();
+    }
+
+    public function setTimeStamp(DateTime $timeStamp)
+    {
+        $this->timeStamp = $timeStamp;
     }
 }

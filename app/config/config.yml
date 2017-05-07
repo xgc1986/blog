@@ -73,14 +73,6 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-xgc_core:
-    security:
-        password:
-            symbols: false
-            numbers: true
-            uppercases: true
-            min_length: 8
-
 old_sound_rabbit_mq:
     connections:
         default:

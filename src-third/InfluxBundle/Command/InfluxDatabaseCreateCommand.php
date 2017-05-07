@@ -3,11 +3,15 @@ declare(strict_types=1);
 namespace Xgc\InfluxBundle\Command;
 
 use AppBundle\Entity\Log;
+use InfluxDB\Database;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Xgc\InfluxBundle\Annotation\MeasurementReader;
+use Xgc\InfluxBundle\Influx\Point;
+use Xgc\UtilsBundle\Helper\DateTime;
 
-class InfluxTestCommand extends ContainerAwareCommand
+class InfluxDatabaseCreateCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -15,7 +19,7 @@ class InfluxTestCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('xgc:influx:test')
+            ->setName('xgc:influx:database:create')
             ->setDescription('Hello PhpStorm');
     }
 
@@ -25,20 +29,11 @@ class InfluxTestCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $influx = $this->getContainer()->get('xgc.influx');
+        $name = $this->getContainer()->getParameter('xgc.influx.database');
 
-        $length = 10;
-        $ps = [];
-
-        for ($i = 0; $i < $length; $i++) {
-            $ps[] = new Log();
+        $database = $influx->getClient()->selectDB($name);
+        if (!$database->exists()) {
+            $database->create(new Database\RetentionPolicy($name, '1h'));
         }
-        for ($i = 0; $i < $length; $i++) {
-            $ps[$i]->setLevel("warning");
-            $ps[$i]->setUsername('d');
-            $ps[$i]->setTag('warning_log');
-            $ps[$i]->setMessage('testing_logs');
-        }
-
-        $influx->write($ps);
     }
 }

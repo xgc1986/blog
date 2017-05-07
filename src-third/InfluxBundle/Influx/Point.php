@@ -1,19 +1,21 @@
 <?php
 declare(strict_types=1);
-namespace Xgc\InfluxBundle\DependencyInjection;
+namespace Xgc\InfluxBundle\Influx;
+
+use Xgc\UtilsBundle\Helper\DateTime;
 
 class Point extends \InfluxDB\Point
 {
     public function __construct(
-        $measurement,
+        string $measurement,
         array $tags = [],
-        array $additionalFields = [],
-        $timestamp = null
+        array $fields = [],
+        DateTime $timestamp = null
     ) {
-        parent::__construct($measurement, null, $tags, $additionalFields, $timestamp);
-    }
-
-    public function __construct2(/* INFLUX ENTITY */$model) {
-
+        if (empty($fields)) {
+            parent::__construct($measurement, 1, $tags, [], $timestamp->getMicros());
+        } else {
+            parent::__construct($measurement, null, $tags, $fields, $timestamp->getMicros());
+        }
     }
 }

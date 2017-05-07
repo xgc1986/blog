@@ -39,7 +39,6 @@ class Paginator
 
     public function execute(int $page = 0)
     {
-        $this->currentPage = $page;
         $query = $this->query->getQuery();
         $query->setMaxResults($this->pageSize);
         $query->setFirstResult($this->pageSize * $page);
@@ -50,6 +49,7 @@ class Paginator
         } else {
             $this->pages = (int)round($this->size / $this->pageSize) + 1;
         }
+        $this->currentPage = max(0, min($page, $this->pages - 1));
         $this->hasNext = $this->currentPage < $this->pages - 1;
         $this->hasPrevious = $this->currentPage > 0;
         $this->page = $query->getResult();
