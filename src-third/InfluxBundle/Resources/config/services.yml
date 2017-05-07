@@ -3,3 +3,8 @@ services:
         class: Xgc\InfluxBundle\Service\InfluxService
         arguments:
             - '@service_container'
+
+    xgc.influx.logger:
+        class: Xgc\InfluxBundle\Service\Logger
+        arguments:
+            - '@service_container'
