@@ -5,38 +5,8 @@ namespace Xgc\InfluxBundle\Entity;
 use Xgc\UtilsBundle\Helper\DateTime;
 use Xgc\UtilsBundle\Helper\JSON;
 
-/*
- * @Measurement('my_measurement')
- */
 abstract class MeasurementEntity implements JSON
 {
-    /*
-
-
-
-    /**
-     * @Tag
-     *
-    protected myTag;
-
-    /**
-     * @Tag
-     *
-    protected myTag2;
-
-    /**
-     * @Field
-     *
-    protected myField;
-
-    /**
-     * @Field
-     *
-    protected myField2;
-
-
-     */
-
     /**
      * @var DateTime
      */
@@ -64,7 +34,7 @@ abstract class MeasurementEntity implements JSON
 
     public function getTimeStamp(): DateTime
     {
-        return new DateTime();
+        return $this->timeStamp;
     }
 
     public function setTimeStamp(DateTime $timeStamp)
