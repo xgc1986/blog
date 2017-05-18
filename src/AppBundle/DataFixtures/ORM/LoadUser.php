@@ -17,8 +17,7 @@ class LoadUser extends Fixture
     {
         $user = new User;
         $user->setUsername('admin');
-        $user->setPassword('1234');
-        $this->getContainer()->get('xgc.entity.user')->setPassword($user, '1234');
+        $this->getContainer()->get('xgc.entity.user')->setPassword($user, '123qweQWE');
         $user->setEmail("admin@gmail.com");
         $user->setEnabled(true);
         $user->setLocked(false);
@@ -28,7 +27,7 @@ class LoadUser extends Fixture
 
         $user = new User;
         $user->setUsername('user');
-        $this->getContainer()->get('xgc.entity.user')->setPassword($user, '1234');
+        $this->getContainer()->get('xgc.entity.user')->setPassword($user, '123qweQWE');
         $user->setEmail("user@gmail.com");
         $user->setEnabled(true);
         $user->setLocked(false);
@@ -38,7 +37,7 @@ class LoadUser extends Fixture
 
         $user = new User;
         $user->setUsername('developer');
-        $this->getContainer()->get('xgc.entity.user')->setPassword($user, '1234');
+        $this->getContainer()->get('xgc.entity.user')->setPassword($user, '123qweQWE');
         $user->setEmail("developer@gmail.com");
         $user->setEnabled(true);
         $user->setLocked(false);

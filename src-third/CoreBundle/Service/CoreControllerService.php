@@ -46,8 +46,11 @@ class CoreControllerService implements EventSubscriberInterface
     public function onKernelRequest(GetResponseForExceptionEvent $event): void
     {
         $this->exceptionHandler->handle($event->getException());
-        if ($this->exceptionHandler->getResponse()) {
-            $event->setResponse($this->exceptionHandler->getResponse());
+
+        $response = $this->exceptionHandler->getResponse();
+        if ($response) {
+            $event->setResponse($response);
         }
+
     }
 }

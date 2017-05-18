@@ -27,6 +27,7 @@ class ExceptionHandlerService
         foreach ($handlers as $handler) {
             if ($this->request->getHost() === $handler['host']) {
                 $exceptionHandler = new $handler['handler'];
+                break;
             }
         }
 

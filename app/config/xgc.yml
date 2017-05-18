@@ -3,6 +3,9 @@ xgc_core:
         -
             host: "%host_api%"
             handler: "Xgc\\CoreBundle\\Exception\\ApiExceptionHandler"
+        -
+            host: "%host_admin%"
+            handler: "Xgc\\CoreBundle\\Exception\\FlashExceptionHandler"
 
     versions:
         base: 0.0.9.7
