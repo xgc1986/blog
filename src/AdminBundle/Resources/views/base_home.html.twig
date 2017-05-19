@@ -77,7 +77,8 @@
                 {% if is_granted('ROLE_DEVELOPER') %}
                     <li class="header">DEVELOPER</li>
                     <li><a href="{{ url('admin_version_index') }}"><i class="fa fa-question-circle text-blue"></i> <span>Versions</span></a></li>
-                    <li><a href="{{ url('admin_settings_index') }}"><i class="fa fa-question-circle text-blue"></i> <span>Settings</span></a></li>
+                    <li><a href="{{ url('admin_settings_index') }}"><i class="fa fa-gear text-blue"></i> <span>Settings</span></a></li>
+                    <li><a href="{{ url('admin_log_list_index') }}"><i class="fa fa-list-alt text-blue"></i> <span>Log</span></a></li>
                 {% endif %}
             </ul>
         </div><!-- /.sidebar -->

@@ -17,7 +17,7 @@ class FlashExceptionHandler extends ExceptionHandler
         }
 
         $referer = $this->container->get('xgc.request')->headers->get('referer');
-        $this->container->get('session')->getFlashBag()->add('error', $this->exception->getMessage() . " $referer");
+        $this->container->get('session')->getFlashBag()->add('error', $this->exception->getMessage());
 
 
         if ($referer) {
