@@ -28,7 +28,7 @@ class DefaultController extends Controller
         if ($this->request->getMethod() == "POST") {
             $username = $this->request->check("username");
             $password = $this->request->check("password");
-            $this->get('xgc.security')->login("AppBundle:User", "api", $username, $password, true);
+            $this->get('security')->login("AppBundle:User", "api", $username, $password, true);
         }
         return [
             'versions' => Versions::VERSIONS,

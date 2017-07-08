@@ -8,6 +8,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Xgc\CoreBundle\Controller\Controller;
 
+/**
+ * Class HomeController
+ * @package AdminBundle\Controller\User
+ */
 class HomeController extends Controller
 {
     /**
@@ -16,7 +20,7 @@ class HomeController extends Controller
      * @Security("has_role('ROLE_USER')")
      * @Method({"GET"})
      */
-    public function indexAction()
+    public function indexAction(): array
     {
         return [];
     }

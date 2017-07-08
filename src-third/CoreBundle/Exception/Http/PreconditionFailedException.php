@@ -7,8 +7,8 @@ use Xgc\CoreBundle\Exception\HttpException;
 class PreconditionFailedException extends HttpException
 {
 
-    function __construct(?string $message = null, ?\Throwable $exception = null)
+    function __construct(?string $message = null, array $params = [], ?\Throwable $exception = null)
     {
-        parent::__construct(412, $message ?? "Precondition Failed", [], $exception);
+        parent::__construct(412, $message ?? "Precondition Failed", $params, $exception);
     }
 }

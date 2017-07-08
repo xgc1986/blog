@@ -2,15 +2,20 @@
 declare(strict_types=1);
 namespace AdminBundle\Controller\Log;
 
-use Doctrine\ORM\QueryBuilder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Xgc\CoreBundle\Controller\Controller;
-use Xgc\CoreBundle\Paginator\Paginator;
+use Xgc\CoreBundle\Service\Request;
+use Xgc\CoreBundle\Service\Settings;
 use Xgc\InfluxBundle\Entity\Log;
+use Xgc\InfluxBundle\Service\Influx;
 
+/**
+ * Class ListController
+ * @package AdminBundle\Controller\Log
+ */
 class ListController extends Controller
 {
     /**
@@ -18,19 +23,21 @@ class ListController extends Controller
      * @Template()
      * @Security("has_role('ROLE_DEVELOPER')")
      * @Method({"GET"})
+     * @param Influx $influx
+     * @param Request $request
+     * @param Settings $settings
+     * @return array
      */
-    public function indexAction(): array
+    public function indexAction(Influx $influx, Request $request, Settings $settings): array
     {
-        $influx = $this->get('xgc.influx');
+        $page  = $request->optInt('p', 0);
+        $order = $request->optBool('o', true);
+        $size  = $settings->getInt('paginator.size', 25);
 
-        $page  = intval($this->request->get('p', 0));
-        $orderType = $this->request->get('ot', 'ASC');
-        $size = $this->get('xgc.settings')->getInt('paginator.size', 10);
-
-        $log = $influx->read(Log::class);
+        $log = $influx->read(Log::class, [], null, null, $order, $size, $page);
 
         return [
-            'logs' => $log
+            'logs' => $log,
         ];
     }
 }

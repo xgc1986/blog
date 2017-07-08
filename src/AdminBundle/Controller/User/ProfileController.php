@@ -8,6 +8,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Xgc\CoreBundle\Controller\Controller;
 
+/**
+ * Class ProfileController
+ * @package AdminBundle\Controller\User
+ */
 class ProfileController extends Controller
 {
     /**

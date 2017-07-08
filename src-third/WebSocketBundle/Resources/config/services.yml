@@ -1,0 +1,23 @@
+services:
+
+    admin_bundle.user.feed:
+        class: WebSocketBundle\Topic\MainTopic
+        arguments: ['@service_container']
+        tags:
+            - { name: gos_web_socket.topic }
+
+    pdo:
+        class: PDO
+        arguments:
+            ['mysql:host=%database_host%;dbname=%database_name%','%database_user%', '%database_password%']
+        calls:
+            - [ setAttribute, [3, 2] ] # \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
+
+    session.handler.pdo:
+        class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        arguments: ['@pdo', {lock_mode: 0}]
+
+    nakima.pusher:
+        class: WebSocketBundle\Service\PushService
+        arguments: ["@service_container"]
+

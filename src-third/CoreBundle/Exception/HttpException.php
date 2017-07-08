@@ -20,7 +20,7 @@ abstract class HttpException extends \Symfony\Component\HttpKernel\Exception\Htt
         $this->exception = $exception;
 
         if ($exception) {
-            $this->extras['message'] = $this->extras['message'] ?? $message ?? $exception->getMessage();
+            $this->extras['message'] = $this->extras['message'] ?? $message ?? '';
         } else {
             $this->extras['message'] = $this->extras['message'] ?? $message ?? "Error";
         }

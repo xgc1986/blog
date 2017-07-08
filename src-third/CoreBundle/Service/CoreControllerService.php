@@ -8,11 +8,15 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class CoreControllerService implements EventSubscriberInterface
 {
+
+    /**
+     * @var ExceptionHandlerService
+     */
     private $exceptionHandler;
 
-    public function __construct(RequestService $request)
+    public function __construct(ExceptionHandlerService $exceptionHandler)
     {
-        $this->exceptionHandler = $request->http;
+        $this->exceptionHandler = $exceptionHandler;
     }
 
     /**
@@ -43,14 +47,15 @@ class CoreControllerService implements EventSubscriberInterface
     /**
      * @param GetResponseForExceptionEvent $event
      */
-    public function onKernelRequest(GetResponseForExceptionEvent $event): void
+    public function onKernelRequest(GetResponseForExceptionEvent $event)
     {
-        $this->exceptionHandler->handle($event->getException());
+        $exception = $event->getException();
 
-        $response = $this->exceptionHandler->getResponse();
+        $handler = $this->exceptionHandler->getCurrentExceptionHandler();
+        $handler->handle($exception);
+        $response = $handler->getResponse();
         if ($response) {
             $event->setResponse($response);
         }
-
     }
 }

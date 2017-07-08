@@ -8,10 +8,10 @@ use Xgc\InfluxBundle\Entity\Log;
 
 class Logger
 {
-    const INFO = "INFO";
-    const DEBUG = "DEBUG";
+    const INFO    = "INFO";
+    const DEBUG   = "DEBUG";
     const WARNING = "WARNING";
-    const ERROR = "ERROR";
+    const ERROR   = "ERROR";
 
     protected $container;
 
@@ -43,7 +43,7 @@ class Logger
     private function log(string $level, ?User $user, string $tag, string $message): Log
     {
         $log = new Log();
-        $log->setUsername($user ? $user->getUsername() : '');
+        $log->setUsername($user? $user->getUsername() : 'anon.');
         $log->setLevel($level);
         $log->setMessage($message);
         $log->setTag($tag);

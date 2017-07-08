@@ -7,6 +7,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Xgc\CoreBundle\Controller\Controller;
 
+/**
+ * Class LoginController
+ * @package AdminBundle\Controller\User
+ */
 class LoginController extends Controller
 {
     /**
@@ -14,7 +18,7 @@ class LoginController extends Controller
      * @Template()
      * @Method({"GET"})
      */
-    public function indexAction()
+    public function indexAction(): array
     {
         return [];
     }

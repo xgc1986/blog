@@ -1,33 +1,62 @@
 services:
-  xgc.core.controller:
-    class: Xgc\CoreBundle\Service\CoreControllerService
-    arguments: ["@xgc.request"]
-    tags:
-      - { name: kernel.event_subscriber }
 
-  xgc.security:
-    class: Xgc\CoreBundle\Service\SecurityService
-    arguments: ["@service_container","@doctrine", "@xgc.request", "@security.token_storage", "@event_dispatcher", "@security.password_encoder","%secret%"]
+    doctrine:
+        class: Xgc\CoreBundle\Service\Doctrine
+        arguments: ["@service_container", '%doctrine.connections%', '%doctrine.entity_managers%', '%doctrine.default_connection%', '%doctrine.default_entity_manager%']
+    Xgc\CoreBundle\Service\Doctrine:
+        alias: doctrine
 
-  xgc.request:
-    class: Xgc\CoreBundle\Service\RequestService
-    arguments: ["@request_stack"]
-    calls:
-      - [setExceptionHandler, ['@xgc.exception.handler']]
+    versions:
+        class: Xgc\CoreBundle\Service\Versions
+        arguments: ["@service_container"]
+    Xgc\CoreBundle\Service\Versions:
+        alias: versions
 
-  xgc.exception.handler:
-    class: Xgc\CoreBundle\Service\ExceptionHandlerService
-    arguments: ["@service_container", "@xgc.request"]
+    xgc.security:
+        class: Xgc\CoreBundle\Service\XgcSecurity
+        arguments: ["@service_container","@doctrine", "@request", "@security.token_storage", "@event_dispatcher", "@security.password_encoder","%secret%"]
+    Xgc\CoreBundle\Service\Security:
+        alias: xgc.security
 
-  xgc.validator:
-    class: Xgc\CoreBundle\Service\ValidatorService
-    arguments: ["@validator"]
+    symfony:
+        class: Xgc\CoreBundle\Service\Symfony
+        arguments: ["@service_container"]
+    Xgc\CoreBundle\Service\Symfony:
+        alias: symfony
 
-  xgc.settings:
-    class: Xgc\CoreBundle\Service\SettingsService
-    arguments: ["@doctrine", "@xgc.validator"]
+    request:
+        class: Xgc\CoreBundle\Service\Request
+        arguments: ["@service_container"]
+    Xgc\CoreBundle\Service\Request:
+        alias: request
 
-  # Entities
-  xgc.entity.user:
-    class: Xgc\CoreBundle\Service\UserService
-    arguments: ["@service_container"]
+    settings:
+        class: Xgc\CoreBundle\Service\Settings
+        arguments: ["@doctrine", "@xgc.validator"]
+    Xgc\CoreBundle\Service\Settings:
+        alias: settings
+
+    xgc.core.controller:
+        class: Xgc\CoreBundle\Service\CoreControllerService
+        arguments: ["@xgc.exception.handler"]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    xgc.exception.handler:
+        class: Xgc\CoreBundle\Service\ExceptionHandlerService
+        arguments: ["@service_container"]
+
+    xgc.validator:
+        class: Xgc\CoreBundle\Service\ValidatorService
+        arguments: ["@validator"]
+
+
+
+    # Entities
+    xgc.entity.user:
+        class: Xgc\CoreBundle\Service\UserService
+        arguments: ["@service_container"]
+    Xgc\CoreBundle\Service\UserService:
+        alias: xgc.entity.user
+
+

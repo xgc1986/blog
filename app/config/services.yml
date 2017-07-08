@@ -4,6 +4,21 @@ parameters:
 #    parameter_name: value
 
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+        tags: ['controller.service_arguments']
     test:
         class: WebBundle\Service\Test
         arguments: ['@doctrine']
+
+    AdminBundle\Controller\:
+        resource: '../../src/AdminBundle/Controller/*'
+        public: true
+        tags: ['controller.service_arguments']
+
+    AppBundle\Controller\:
+        resource: '../../src/AppBundle/Controller/*'
+        public: true
+        tags: ['controller.service_arguments']

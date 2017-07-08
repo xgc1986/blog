@@ -26,7 +26,7 @@ abstract class Entity implements JSON
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

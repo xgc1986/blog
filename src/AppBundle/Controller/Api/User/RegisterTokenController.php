@@ -4,25 +4,40 @@ namespace AppBundle\Controller\Api\User;
 
 use Xgc\CoreBundle\Controller\Controller;
 use Xgc\CoreBundle\HttpFoundation\JsonResponse;
+use Xgc\CoreBundle\Service\Request;
+use Xgc\CoreBundle\Service\XgcSecurity;
 
+/**
+ * Class RegisterTokenController
+ * @package AppBundle\Controller\Api\User
+ */
 class RegisterTokenController extends Controller
 {
-    public function indexAction(): JsonResponse
-    {
-        $token = $this->request->check('token');
-        $user = $this->get('xgc.security')->enable("AppBundle:User", $token);
 
-        return new JsonResponse(
-            [
-                'user' => $this->toArray($user),
-            ]
-        );
+    /**
+     * @param Request $request
+     * @param XgcSecurity $security
+     * @return JsonResponse
+     */
+    public function indexAction(Request $request, XgcSecurity $security): JsonResponse
+    {
+        $token = $request->fetch('token');
+        $user  = $security->enable("AppBundle:User", $token);
+
+        return new JsonResponse([
+            'user' => $user,
+        ]);
     }
 
-    public function askAction(): JsonResponse
+    /**
+     * @param Request $request
+     * @param XgcSecurity $security
+     * @return JsonResponse
+     */
+    public function askAction(Request $request, XgcSecurity $security): JsonResponse
     {
-        $email = $this->request->check('email');
-        $this->get('xgc.security')->addRegisterToken("AppBundle:user", $email);
+        $email = $request->fetch('email');
+        $security->addRegisterToken("AppBundle:user", $email);
 
         return new JsonResponse();
     }

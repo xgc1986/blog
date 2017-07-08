@@ -9,8 +9,6 @@ use Symfony\Component\Security\Core\Authentication\Token\RememberMeToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-use Symfony\Component\Security\Http\SecurityEvents;
 use Xgc\CoreBundle\Entity\User;
 use Xgc\CoreBundle\Exception\Http\AccessDeniedException;
 use Xgc\CoreBundle\Exception\Http\AccountBeingCreatedException;
@@ -22,33 +20,51 @@ use Xgc\CoreBundle\Exception\Http\ResourceNotFoundException;
 use Xgc\UtilsBundle\Helper\DateTime;
 use Xgc\UtilsBundle\Helper\Text;
 
-class SecurityService
+/**
+ * Class Security
+ * @package Xgc\CoreBundle\Service
+ */
+class XgcSecurity
 {
+
+    /** @var ContainerInterface */
     protected $container;
+
+    /** @var Doctrine */
     protected $doctrine;
+
+    /** @var Request */
     protected $request;
+
+    /** @var TokenStorage */
     protected $tokenStorage;
+
+    /** @var EventDispatcherInterface */
     protected $eventDispatcher;
+
+    /** @var UserPasswordEncoderInterface */
     protected $encoder;
+
+    /** @var String */
     protected $secret;
 
 
     public function __construct(
         ContainerInterface $container,
         Registry $doctrine,
-        RequestService $request,
+        Request $request,
         TokenStorage $tokenStorage,
         EventDispatcherInterface $eventDispatcher,
         UserPasswordEncoderInterface $encoder,
         String $secret
     ) {
-        $this->container = $container;
-        $this->doctrine = $doctrine;
-        $this->request = $request;
-        $this->tokenStorage = $tokenStorage;
+        $this->container       = $container;
+        $this->doctrine        = $doctrine;
+        $this->request         = $request;
+        $this->tokenStorage    = $tokenStorage;
         $this->eventDispatcher = $eventDispatcher;
-        $this->encoder = $encoder;
-        $this->secret = $secret;
+        $this->encoder         = $encoder;
+        $this->secret          = $secret;
     }
 
     public function login(string $fqn, string $firewall, string $username, string $password, bool $remember): User
@@ -63,7 +79,7 @@ class SecurityService
 
         $user = $this->castToUser($user);
 
-        if (!$this->hasPassword($password, $user)) {
+        if (!$this->hasPassword($user, $password)) {
             throw new AccessDeniedException();
         }
 
@@ -84,9 +100,9 @@ class SecurityService
         }
 
         $securityTokenStorage->setToken($token);
-        $request = $this->request->getCurrentRequest();
-        $event = new InteractiveLoginEvent($request, $token);
-        $this->eventDispatcher->dispatch(SecurityEvents::INTERACTIVE_LOGIN, $event);
+        //$request = $this->request->getOriginal();
+        //$event   = new InteractiveLoginEvent($request, $token);
+        //$this->eventDispatcher->dispatch(SecurityEvents::INTERACTIVE_LOGIN, $event);
 
         return $user;
     }
@@ -116,42 +132,37 @@ class SecurityService
         if (!$token) {
             return null;
         }
+        /** @var User $user */
         $user = $token->getUser();
         if (!$user || is_string($user)) {
             return null;
         }
 
+        if (!$user->isEnabled()) {
+            throw new AccountBeingCreatedException();
+        }
+
+        if ($user->isLocked()) {
+            throw new AccountDissabledException();
+        }
+
         return $user;
     }
 
-    public function changePasswords(string $oldPassword, string $password, string $password2): User
+    public function changePasswords(User $user, string $password): User
     {
-        $user = $this->getUser();
-
-        if (!$user) {
-            throw new AccessDeniedException();
-        }
-
-        if ($password !== $password2) {
-            throw new PreconditionFailedException("Passwords missmatch");
-        }
-
-        $minLength = $this->container->getParameter('xgc.security.password.minlength');
-        $symbols = $this->container->getParameter('xgc.security.password.symbols');
-        $numbers = $this->container->getParameter('xgc.security.password.numbers');
+        $minLength  = $this->container->getParameter('xgc.security.password.minlength');
+        $symbols    = $this->container->getParameter('xgc.security.password.symbols');
+        $numbers    = $this->container->getParameter('xgc.security.password.numbers');
         $uppercases = $this->container->getParameter('xgc.security.password.uppercases');
 
         if (!Text::validatePassword($password, $minLength, true, $numbers, $uppercases, $symbols)) {
             throw new InvalidParamException('password', "Password insecure");
         }
 
-        if (!$this->hasPassword($oldPassword)) {
-            throw new PreconditionFailedException("Password is not correct");
-        }
-
         $user->setPassword($password);
 
-        $this->doctrine->getManager()->flush();
+        $this->doctrine->flush($user);
 
         return $user;
     }
@@ -180,9 +191,9 @@ class SecurityService
             throw new PreconditionFailedException("Passwords missmatch");
         }
 
-        $minLength = $this->container->getParameter('xgc.security.password.minlength');
-        $symbols = $this->container->getParameter('xgc.security.password.symbols');
-        $numbers = $this->container->getParameter('xgc.security.password.numbers');
+        $minLength  = $this->container->getParameter('xgc.security.password.minlength');
+        $symbols    = $this->container->getParameter('xgc.security.password.symbols');
+        $numbers    = $this->container->getParameter('xgc.security.password.numbers');
         $uppercases = $this->container->getParameter('xgc.security.password.uppercases');
 
         if (!Text::validatePassword($password, $minLength, true, $numbers, $uppercases, $symbols)) {
@@ -205,9 +216,8 @@ class SecurityService
 
     public function logout(): void
     {
-        $request = $this->request->getCurrentRequest();
         $this->tokenStorage->setToken(null);
-        $request->getSession()->invalidate();
+        $this->request->getSession()->invalidate();
     }
 
     public function enable(string $fqn, string $token): User
@@ -279,14 +289,8 @@ class SecurityService
         return $user;
     }
 
-    public function hasPassword(string $password, ?User $user = null): bool
+    public function hasPassword(User $user, string $password): bool
     {
-        $user = $user ?? $this->getUser();
-
-        if (!$user) {
-            throw new AccessDeniedException();
-        }
-
         return $this->encoder->isPasswordValid($user, $password);
     }
 
@@ -298,9 +302,9 @@ class SecurityService
             throw new AccessDeniedException();
         }
 
-        $minLength = $this->container->getParameter('xgc.security.password.minlength');
-        $symbols = $this->container->getParameter('xgc.security.password.symbols');
-        $numbers = $this->container->getParameter('xgc.security.password.numbers');
+        $minLength  = $this->container->getParameter('xgc.security.password.minlength');
+        $symbols    = $this->container->getParameter('xgc.security.password.symbols');
+        $numbers    = $this->container->getParameter('xgc.security.password.numbers');
         $uppercases = $this->container->getParameter('xgc.security.password.uppercases');
 
         if (!Text::validatePassword($password, $minLength, true, $numbers, $uppercases, $symbols)) {
@@ -313,5 +317,10 @@ class SecurityService
         $this->doctrine->getManager()->flush();
 
         return $user;
+    }
+
+    public function deleteUser(User $user)
+    {
+        $this->doctrine->flush($user);
     }
 }
