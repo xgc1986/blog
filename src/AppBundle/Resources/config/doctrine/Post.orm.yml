@@ -1,2 +1,14 @@
 AppBundle\Entity\Setting:
     type: entity
+
+    fields:
+        title:
+            type: string
+            length: 140
+        slug:
+            type: string
+            length: 140
+            unique: true
+        text:
+            type: text
+
