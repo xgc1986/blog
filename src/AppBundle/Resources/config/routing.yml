@@ -1,5 +1,4 @@
 app_api:
     resource: "@AppBundle/Resources/config/routing_api.yml"
     host: '%host_api%'
-    schemes: [https]
     prefix:   /

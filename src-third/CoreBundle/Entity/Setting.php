@@ -37,9 +37,9 @@ class Setting extends Entity
 
     function __toArray(): array
     {
-        $ret = parent::__toArray();
-        $ret['key'] = $this->getKey();
-        $ret['type'] = $this->getType();
+        $ret          = parent::__toArray();
+        $ret['key']   = $this->getKey();
+        $ret['type']  = $this->getType();
         $ret['value'] = $this->getValue();
 
         return $ret;
@@ -95,28 +95,21 @@ class Setting extends Entity
      */
     public function getRealValue()
     {
-        if ($this->type == Settings::DATETIME) {
-            return DateTime::fromFormat('U', $this->value);
-        }
-
-        if ($this->type == Settings::STRING) {
-            return $this->value;
-        }
-
-        if ($this->type == Settings::INT) {
-            return intval($this->value);
-        }
-
-        if ($this->type == Settings::FLOAT) {
-            return floatval($this->value);
-        }
-
-        if ($this->type == Settings::JSON) {
-            return json_decode($this->value, true);
-        }
-
-        if ($this->type == Settings::BOOL) {
-            return $this->value === "true";
+        switch($this->type) {
+            case Settings::DATETIME:
+                return DateTime::fromFormat('U', $this->value);
+            case Settings::STRING:
+                return $this->value;
+            case Settings::INT:
+                return intval($this->value);
+            case Settings::FLOAT:
+                return floatval($this->value);
+            case Settings::JSON:
+                return json_decode($this->value, true);
+            case Settings::BOOL:
+                return $this->value === "true" || $this->value === "1";
+            default:
+                return null;
         }
     }
 

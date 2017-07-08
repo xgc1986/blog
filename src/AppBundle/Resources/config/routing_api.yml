@@ -1,3 +1,4 @@
+# USER
 app_api_user_register:
     path:     /register
     methods: ['POST']
@@ -37,3 +38,4 @@ app_api_user_register_ask:
     path:     /register/ask
     methods: ['POST']
     defaults: { _controller: AppBundle:Api/User/RegisterToken:ask }
+
