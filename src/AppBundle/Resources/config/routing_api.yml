@@ -43,5 +43,5 @@ app_api_user_register_ask:
 # POST
 app_api_post_create:
     path:     /post/create
-    methods: ['POST']
+    methods: ['GET']
     defaults: { _controller: AppBundle:Api/Post/Create:index }

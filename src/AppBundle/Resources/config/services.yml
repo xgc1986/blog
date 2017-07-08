@@ -1,0 +1,7 @@
+services:
+
+    entity.post:
+        class: AppBundle\Service\PostService
+        arguments: ["@service_container"]
+    AppBundle\Service\PostService:
+        alias: entity.post

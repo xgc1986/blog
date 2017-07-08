@@ -27,6 +27,17 @@ class Post extends Entity
     protected $slug;
 
     /**
+     * @var User
+     * @Assert\NotNull()
+     */
+    protected $author;
+
+    public function __getType(): string
+    {
+        return 'post';
+    }
+
+    /**
      * @return string
      */
     public function getSlug(): string
@@ -40,11 +51,6 @@ class Post extends Entity
     public function setSlug(string $slug)
     {
         $this->slug = $slug;
-    }
-
-    public function __getType(): string
-    {
-        return 'post';
     }
 
     /**
@@ -77,6 +83,22 @@ class Post extends Entity
     public function setText(string $text)
     {
         $this->text = $text;
+    }
+
+    /**
+     * @return User
+     */
+    public function getAuthor(): User
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param User $author
+     */
+    public function setAuthor(User $author)
+    {
+        $this->author = $author;
     }
 
 }

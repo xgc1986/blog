@@ -1,4 +1,4 @@
-AppBundle\Entity\Setting:
+AppBundle\Entity\Post:
     type: entity
 
     fields:
@@ -11,4 +11,8 @@ AppBundle\Entity\Setting:
             unique: true
         text:
             type: text
+    manyToOne:
+        author:
+            targetEntity: AppBundle\Entity\User
+
 

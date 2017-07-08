@@ -4,7 +4,6 @@ namespace Xgc\InfluxBundle\Entity;
 
 use Xgc\InfluxBundle\Annotation\Measurement;
 use Xgc\InfluxBundle\Annotation\Tag;
-use Xgc\InfluxBundle\Entity\MeasurementEntity;
 use Xgc\UtilsBundle\Helper\DateTime;
 
 /**
@@ -12,6 +11,11 @@ use Xgc\UtilsBundle\Helper\DateTime;
  */
 class Log extends MeasurementEntity
 {
+    const INFO    = "INFO";
+    const DEBUG   = "DEBUG";
+    const WARNING = "WARNING";
+    const ERROR   = "ERROR";
+
     /**
      * @Tag
      */
