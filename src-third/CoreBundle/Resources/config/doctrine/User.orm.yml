@@ -34,7 +34,5 @@ Xgc\CoreBundle\Entity\User:
     clientIp:
       type: string
       length: 15
-    createdAt:
-      type: datetime
     avatar:
       type: string

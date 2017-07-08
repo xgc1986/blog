@@ -105,11 +105,6 @@ abstract class User extends Entity implements AdvancedUserInterface, \Serializab
      */
     protected $clientIp;
 
-    /**
-     * @var DateTime
-     */
-    protected $createdAt;
-
     function __construct()
     {
         $this->roles = new ArrayCollection();
@@ -478,24 +473,5 @@ abstract class User extends Entity implements AdvancedUserInterface, \Serializab
     public function setAvatar(string $avatar)
     {
         $this->avatar = $avatar;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime $created_at
-     * @return User
-     */
-    public function setCreatedAt(DateTime $createdAt): User
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
     }
 }
