@@ -1,0 +1,2 @@
+AppBundle\Entity\Setting:
+    type: entity
