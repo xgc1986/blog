@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace AppBundle\Controller\Api\Post;
 
+use AppBundle\Entity\User;
 use AppBundle\Service\PostService;
 use Xgc\CoreBundle\Controller\Controller;
 use Xgc\CoreBundle\HttpFoundation\JsonResponse;
@@ -22,6 +23,8 @@ class CreateController extends Controller
      */
     public function indexAction(Request $request, Influx $influx, XgcSecurity $security, PostService $postService
     ): JsonResponse {
+
+        /** @var User $user */
         $user  = $security->checkUser();
         $title = $request->fetch('title');
         $text  = $request->fetch('text');
