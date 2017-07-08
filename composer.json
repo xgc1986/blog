@@ -45,7 +45,8 @@
         "intervention/image": "^2.3",
         "sonata-project/intl-bundle": "^2.3",
         "ocramius/package-versions": "^1.1",
-        "influxdb/influxdb-php": "^1.14"
+        "influxdb/influxdb-php": "^1.14",
+        "cocur/slugify": "^2.5"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
