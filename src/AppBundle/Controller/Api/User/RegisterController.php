@@ -4,20 +4,33 @@ namespace AppBundle\Controller\Api\User;
 
 use AppBundle\Entity\User;
 use Xgc\CoreBundle\Controller\Controller;
+use Xgc\CoreBundle\Exception\Http\AccountAlreadyExistsException;
 use Xgc\CoreBundle\Exception\Http\InvalidParamException;
 use Xgc\CoreBundle\Exception\Http\PreconditionFailedException;
 use Xgc\CoreBundle\HttpFoundation\JsonResponse;
-use Xgc\UtilsBundle\Helper\JsonHelper;
+use Xgc\CoreBundle\Service\Doctrine;
+use Xgc\CoreBundle\Service\Request;
+use Xgc\CoreBundle\Service\UserService;
 use Xgc\UtilsBundle\Helper\Text;
 
+/**
+ * Class RegisterController
+ * @package AppBundle\Controller\Api\User
+ */
 class RegisterController extends Controller
 {
-    public function indexAction(): JsonResponse
+    /**
+     * @param Request $request
+     * @param UserService $userService
+     * @param Doctrine $doctrine
+     * @return JsonResponse
+     */
+    public function indexAction(Request $request, UserService $userService, Doctrine $doctrine): JsonResponse
     {
-        $username = $this->request->check('username');
-        $password = $this->request->check('password');
-        $password2 = $this->request->check('password2');
-        $email = $this->request->check('email');
+        $username  = $request->fetch('username');
+        $password  = $request->fetch('password');
+        $password2 = $request->fetch('password2');
+        $email     = $request->fetch('email');
 
         if ($password !== $password2) {
             throw new PreconditionFailedException("Passwords missmatch");
@@ -27,22 +40,23 @@ class RegisterController extends Controller
             throw new InvalidParamException('password', "Password insecure");
         }
 
+        if ($userService->find($username)) {
+            throw new AccountAlreadyExistsException();
+        }
+
+        if ($userService->find($email)) {
+            throw new AccountAlreadyExistsException();
+        }
+
         $user = new User();
         $user->setUsername($username);
-        $this->get('xgc.entity.user')->setPassword($user, $password);
+        $userService->setPassword($user, $password);
         $user->setEmail($email);
         $user->setEnabled(true);
-        $user->setClientIp($this->request->getIp());
+        $user->setClientIp($request->getIP());
 
-        // validate
-        $this->get('xgc.validator')->validate($user, $this->http);
+        $doctrine->flush($user);
 
-        $manager = $this->get('doctrine')->getManager();
-        $manager->persist($user);
-        $manager->flush();
-
-        $result = [];
-        JsonHelper::getInstance()->encode($user, $result, 'user');
-        return new JsonResponse($result);
+        return new JsonResponse(['user' => $user]);
     }
 }

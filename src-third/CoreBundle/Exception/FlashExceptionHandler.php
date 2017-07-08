@@ -16,7 +16,7 @@ class FlashExceptionHandler extends ExceptionHandler
             return null;
         }
 
-        $referer = $this->container->get('xgc.request')->headers->get('referer');
+        $referer = $this->container->get('request')->headers->get('referer');
         $this->container->get('session')->getFlashBag()->add('error', $this->exception->getMessage());
 
 
@@ -28,19 +28,4 @@ class FlashExceptionHandler extends ExceptionHandler
 
     }
 
-
-    /**
-     * {@inheritDoc}
-     *
-     * public function throwInternalServerError(Exception $exception, ?string $message = null): void
-     * {
-     * if ($this->container->getParameter('kernel.environment') === "prod") {
-     * throw new ApiException(500, "Internal server error.");
-     * } else {
-     * $trace = $exception->getTrace();
-     * $trace[0]["line"] = $exception->getLine();
-     * throw new ApiException(500, $message ?? $exception->getMessage(), ['trace' => $trace]);
-     * }
-     *
-     * }*/
 }

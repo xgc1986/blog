@@ -27,9 +27,9 @@ class UserService
 
         $encoder = $this->container->get('security.password_encoder');
 
-        $minLength = $this->container->getParameter('xgc.security.password.minlength');
-        $symbols = $this->container->getParameter('xgc.security.password.symbols');
-        $numbers = $this->container->getParameter('xgc.security.password.numbers');
+        $minLength  = $this->container->getParameter('xgc.security.password.minlength');
+        $symbols    = $this->container->getParameter('xgc.security.password.symbols');
+        $numbers    = $this->container->getParameter('xgc.security.password.numbers');
         $uppercases = $this->container->getParameter('xgc.security.password.uppercases');
 
         if (!Text::validatePassword($password, $minLength, true, $numbers, $uppercases, $symbols)) {
@@ -60,7 +60,7 @@ class UserService
         $extension = $file->guessExtension() ?? $file->guessExtension();
 
         $manager = new ImageManager(['driver' => 'Gd']);
-        $image = $manager->make($file->getRealPath());
+        $image   = $manager->make($file->getRealPath());
 
         if ($image->getHeight() > $image->getWidth()) {
             $newHeight = $image->getHeight() / ($image->getWidth() / $size);
@@ -83,5 +83,13 @@ class UserService
         $user->setAvatar("$path/$name.$extension");
 
         $this->container->get('doctrine')->getManager()->flush();
+    }
+
+    public function find(string $username): ?User
+    {
+        $repo = $this->container->get('doctrine')->getRepository(\AppBundle\Entity\User::class);
+
+        return $repo->findOneBy(['username' => $username]) ??
+               $repo->findOneBy(['email' => $username]);
     }
 }

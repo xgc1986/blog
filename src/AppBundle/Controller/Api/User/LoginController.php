@@ -2,22 +2,30 @@
 declare(strict_types=1);
 namespace AppBundle\Controller\Api\User;
 
+use AppBundle\Entity\User;
 use Xgc\CoreBundle\Controller\Controller;
-use Xgc\CoreBundle\Helper\DoctrineHelper;
 use Xgc\CoreBundle\HttpFoundation\JsonResponse;
-use Xgc\UtilsBundle\Helper\JsonHelper;
+use Xgc\CoreBundle\Service\Request;
+use Xgc\CoreBundle\Service\XgcSecurity;
 
+/**
+ * Class LoginController
+ * @package AppBundle\Controller\Api\User
+ */
 class LoginController extends Controller
 {
-    public function indexAction(): JsonResponse
+    /**
+     * @param Request $request
+     * @param XgcSecurity $security
+     * @return JsonResponse
+     */
+    public function indexAction(Request $request, XgcSecurity $security): JsonResponse
     {
-        $username = $this->request->check('username');
-        $password = $this->request->check('password');
+        $username = $request->fetch('username');
+        $password = $request->fetch('password');
 
-        $user = $this->get('xgc.security')->login("AppBundle:User", "api", $username, $password, true);
+        $user = $security->login(User::class, "main", $username, $password, true);
 
-        $resp = [];
-        JsonHelper::getInstance()->encode($user, $resp, 'user');
-        return new JsonResponse($resp);
+        return new JsonResponse(['user' => $user]);
     }
 }

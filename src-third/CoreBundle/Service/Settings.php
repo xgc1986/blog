@@ -10,7 +10,7 @@ use Xgc\CoreBundle\Exception\Settings\InvalidWriteSettingException;
 use Xgc\CoreBundle\Exception\Settings\SettingNotFoundException;
 use Xgc\UtilsBundle\Helper\DateTime;
 
-class SettingsService
+class Settings
 {
 
     const STRING   = "STRING";

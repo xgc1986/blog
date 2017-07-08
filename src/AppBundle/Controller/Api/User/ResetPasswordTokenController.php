@@ -2,30 +2,35 @@
 declare(strict_types=1);
 namespace AppBundle\Controller\Api\User;
 
+use AppBundle\Entity\User;
 use Xgc\CoreBundle\Controller\Controller;
 use Xgc\CoreBundle\HttpFoundation\JsonResponse;
+use Xgc\CoreBundle\Service\Request;
+use Xgc\CoreBundle\Service\XgcSecurity;
 
+/**
+ * Class ResetPasswordTokenController
+ * @package AppBundle\Controller\Api\User
+ */
 class ResetPasswordTokenController extends Controller
 {
-    public function indexAction(): JsonResponse
+    public function indexAction(Request $request, XgcSecurity $security): JsonResponse
     {
-        $token = $this->request->check('token');
-        $password = $this->request->check('password');
-        $password2 = $this->request->check('password2');
+        $token     = $request->fetch('token');
+        $password  = $request->fetch('password');
+        $password2 = $request->fetch('password2');
 
-        $user = $this->get('xgc.security')->resetPassword("AppBundle:User", $token, $password, $password2);
+        $user = $security->resetPassword(User::class, $token, $password, $password2);
 
-        return new JsonResponse(
-            [
-                'user' => $this->toArray($user),
-            ]
-        );
+        return new JsonResponse([
+            'user' => $user,
+        ]);
     }
 
-    public function askAction(): JsonResponse
+    public function askAction(Request $request, XgcSecurity $security): JsonResponse
     {
-        $email = $this->request->check('email');
-        $this->get('xgc.security')->addResetPasswordToken("AppBundle:user", $email);
+        $email = $request->fetch('email');
+        $security->addResetPasswordToken(User::class, $email);
 
         return new JsonResponse();
     }

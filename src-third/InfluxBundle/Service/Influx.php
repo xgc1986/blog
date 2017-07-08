@@ -10,7 +10,7 @@ use Xgc\InfluxBundle\Entity\MeasurementEntity;
 use Xgc\InfluxBundle\Influx\Paginator;
 use Xgc\UtilsBundle\Helper\DateTime;
 
-class InfluxService
+class Influx
 {
     /**
      * @var Client
@@ -45,9 +45,10 @@ class InfluxService
     {
         $this->connect();
         if (!$this->database) {
-            $db = $this->container->getParameter('xgc.influx.database');
+            $db             = $this->container->getParameter('xgc.influx.database');
             $this->database = $this->client->selectDB($db);
         }
+
         return $this->database;
     }
 
@@ -74,15 +75,15 @@ class InfluxService
         int $offset = 0
     ): Paginator {
         $this->connectDB();
-        $reader = new MeasurementReader();
-        $dummy = new $influxEntity();
+        $reader      = new MeasurementReader();
+        $dummy       = new $influxEntity();
         $measurement = $reader->getMeasurement($dummy);
 
         $count = $this->buildCount($measurement, $tags, $from, $to);
         $query = $this->buildQuery($measurement, $tags, $from, $to, $asc, $limit, $offset);
 
         $result = $this->query($query);
-        $total = $this->query($count)[0]['total_value'] ?? 0;
+        $total  = $this->query($count)[0]['total_value'] ?? 0;
 
         $ret = [];
 
@@ -93,6 +94,7 @@ class InfluxService
         }
 
         $pag = new Paginator($ret, $limit, $total, $offset * $limit);
+
         return $pag;
     }
 
@@ -111,7 +113,9 @@ class InfluxService
 
             foreach ($line as $idx => $value) {
                 if ($result->getSeries()[0]['columns'][$idx] === 'time') {
-                    $row['time'] = (new DateTime($value, New \DateTimeZone('UTC')))->setTimezone(new \DateTimeZone('Europe/Paris'));
+                    $row['time'] = (new DateTime($value, New \DateTimeZone('UTC')))->setTimezone(
+                        new \DateTimeZone('Europe/Paris')
+                    );
                 } else {
                     $row[$result->getSeries()[0]['columns'][$idx]] = $value;
                 }
@@ -145,21 +149,21 @@ class InfluxService
     ): string {
         $hasWhere = false;
         $needsAnd = false;
-        $query = "SELECT * FROM $measurement";
+        $query    = "SELECT * FROM $measurement";
 
         if (!empty($tags)) {
             foreach ($tags as $tag => $value) {
 
                 if (!$hasWhere) {
                     $hasWhere = true;
-                    $query .= " WHERE";
+                    $query    .= " WHERE";
                 }
 
                 if ($needsAnd) {
                     $query .= " AND";
                 }
 
-                $query .= " $tag = '$value'";
+                $query    .= " $tag = '$value'";
                 $needsAnd = true;
             }
         }
@@ -167,7 +171,7 @@ class InfluxService
         if ($from) {
             if (!$hasWhere) {
                 $hasWhere = true;
-                $query .= " WHERE";
+                $query    .= " WHERE";
             }
 
             if ($needsAnd) {
@@ -205,21 +209,21 @@ class InfluxService
     ): string {
         $hasWhere = false;
         $needsAnd = false;
-        $query = "SELECT COUNT(*) AS total FROM $measurement";
+        $query    = "SELECT COUNT(*) AS total FROM $measurement";
 
         if (!empty($tags)) {
             foreach ($tags as $tag => $value) {
 
                 if (!$hasWhere) {
                     $hasWhere = true;
-                    $query .= " WHERE";
+                    $query    .= " WHERE";
                 }
 
                 if ($needsAnd) {
                     $query .= " AND";
                 }
 
-                $query .= " $tag = '$value'";
+                $query    .= " $tag = '$value'";
                 $needsAnd = true;
             }
         }
@@ -227,7 +231,7 @@ class InfluxService
         if ($from) {
             if (!$hasWhere) {
                 $hasWhere = true;
-                $query .= " WHERE";
+                $query    .= " WHERE";
             }
 
             if ($needsAnd) {
@@ -261,8 +265,8 @@ class InfluxService
             if ($idx === 'time') {
                 $entity->setTimeStamp($value);
             } else {
-                if (method_exists($entity,"set" . ucfirst($idx))) {
-                    $entity->{ "set" . ucfirst($idx) }($value);
+                if (method_exists($entity, "set" . ucfirst($idx))) {
+                    $entity->{"set" . ucfirst($idx)}($value);
                 }
             }
         }

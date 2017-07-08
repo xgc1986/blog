@@ -7,7 +7,7 @@ use AppBundle\Entity\Setting;
 use AppBundle\Entity\User;
 use Xgc\CoreBundle\DataFixtures\ORM\Fixture;
 use Xgc\CoreBundle\Entity\Entity;
-use Xgc\CoreBundle\Service\SettingsService;
+use Xgc\CoreBundle\Service\Settings;
 use Xgc\UtilsBundle\Helper\DateTime;
 
 /**
@@ -17,7 +17,7 @@ class LoadSetting extends Fixture
 {
     public function loadProd(): void
     {
-        $settingsService = $this->getContainer()->get('xgc.settings');
+        $settingsService = $this->getContainer()->get('settings');
         $settingsService->putInt('paginator.size', 25);
     }
 
@@ -29,7 +29,7 @@ class LoadSetting extends Fixture
     public function loadTest(): void
     {
         $this->loadProd();
-        $settingsService = $this->getContainer()->get('xgc.settings');
+        $settingsService = $this->getContainer()->get('settings');
         $settingsService->put('string example', "example");
         $settingsService->putFloat('float example', 8.4);
         $settingsService->putInt('int example', 8);

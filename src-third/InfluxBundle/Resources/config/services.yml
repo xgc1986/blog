@@ -1,8 +1,10 @@
 services:
     xgc.influx:
-        class: Xgc\InfluxBundle\Service\InfluxService
+        class: Xgc\InfluxBundle\Service\Influx
         arguments:
             - '@service_container'
+    Xgc\InfluxBundle\Service\Influx:
+        alias: xgc.influx
 
     xgc.influx.logger:
         class: Xgc\InfluxBundle\Service\Logger

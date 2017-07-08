@@ -4,52 +4,34 @@ namespace AdminBundle\Controller\User;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
 use Xgc\CoreBundle\Controller\Controller;
-use Xgc\CoreBundle\Exception\HttpException;
+use Xgc\CoreBundle\Service\Request;
+use Xgc\CoreBundle\Service\UserService;
 
+/**
+ * Class ProfileAvatarController
+ * @package AdminBundle\Controller\User
+ */
 class ProfileAvatarController extends Controller
 {
 
     /**
-     * @Route("/profile/avatar")
-     * @Method("GET")
-     * @Security("has_role('ROLE_USER')")
-     * @Template()
-     */
-    public function indexAction()
-    {
-
-    }
-
-    /**
      * @Route("/profile/avatar/update")
      * @Method({"POST"})
+     * @param Request $request
+     * @param UserService $userService
+     * @return Response
      */
-    public function updateAction()
+    public function updateAction(Request $request, UserService $userService)
     {
-        $file = $this->request->checkFile('avatar');
+        $file = $request->fetchFile('avatar');
 
         $user = $this->getUser();
-        $id = $user->getId();
+        $id   = $user->getId();
 
-        try {
-            $this->get('xgc.entity.user')->uploadAvatar($user, $file, "/images/$id", "avatar");
-        } catch (HttpException $exception) {
-            $this->addFlash(
-                'error',
-                $exception->getMessage()
-            );
-
-            return $this->render('@Admin/User/ProfileAvatar/index.html.twig');
-        }
-
-        $this->addFlash(
-            'notice',
-            'Tu avatar ha sido actualizado correctamente'
-        );
-
+        $userService->uploadAvatar($user, $file, "/images/$id", "avatar");
+        $this->addFlash('notice', 'Tu avatar ha sido actualizado correctamente');
         return $this->redirectToRoute('admin_user_profile_index');
     }
 }

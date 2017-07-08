@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace Xgc\CoreBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Xgc\CoreBundle\Service\SettingsService;
+use Xgc\CoreBundle\Service\Settings;
 use Xgc\UtilsBundle\Helper\DateTime;
 
 class Setting extends Entity
@@ -95,27 +95,27 @@ class Setting extends Entity
      */
     public function getRealValue()
     {
-        if ($this->type == SettingsService::DATETIME) {
+        if ($this->type == Settings::DATETIME) {
             return DateTime::fromFormat('U', $this->value);
         }
 
-        if ($this->type == SettingsService::STRING) {
+        if ($this->type == Settings::STRING) {
             return $this->value;
         }
 
-        if ($this->type == SettingsService::INT) {
+        if ($this->type == Settings::INT) {
             return intval($this->value);
         }
 
-        if ($this->type == SettingsService::FLOAT) {
+        if ($this->type == Settings::FLOAT) {
             return floatval($this->value);
         }
 
-        if ($this->type == SettingsService::JSON) {
+        if ($this->type == Settings::JSON) {
             return json_decode($this->value, true);
         }
 
-        if ($this->type == SettingsService::BOOL) {
+        if ($this->type == Settings::BOOL) {
             return $this->value === "true";
         }
     }

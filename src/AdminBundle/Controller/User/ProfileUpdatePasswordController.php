@@ -4,50 +4,33 @@ namespace AdminBundle\Controller\User;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Xgc\CoreBundle\Controller\Controller;
-use Xgc\CoreBundle\Exception\HttpException;
+use Xgc\CoreBundle\Exception\Http\PreconditionFailedException;
+use Xgc\CoreBundle\Service\Request;
+use Xgc\CoreBundle\Service\XgcSecurity;
 
 class ProfileUpdatePasswordController extends Controller
 {
-    /**
-     * @Route("/profile/password")
-     * @Method("GET")
-     * @Security("has_role('ROLE_USER')")
-     * @Template()
-     */
-    public function indexAction()
-    {
-
-    }
 
     /**
      * @Route("/profile/password/update")
-     * @Security("has_role('ROLE_USER')")
      * @Method({"POST"})
+     * @param Request $request
+     * @param XgcSecurity $security
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function updateAction()
+    public function updateAction(Request $request, XgcSecurity $security)
     {
-        $password = $this->request->check('password');
-        $newPassword = $this->request->check('new-password');
-        $newPassword2 = $this->request->check('new-password2');
+        $password     = $request->fetch('password');
+        $newPassword  = $request->fetch('new-password');
+        $user         = $security->checkUser();
 
-        try {
-            $this->get('xgc.security')->changePasswords($password, $newPassword, $newPassword2);
-        } catch (HttpException $exception) {
-            $this->addFlash(
-                'error',
-                $exception->getMessage()
-            );
-
-            return $this->render('@Admin/User/ProfileUpdatePassword/index.html.twig');
+        if (!$security->hasPassword($user, $password)) {
+            throw new PreconditionFailedException("Password is not correct");
         }
 
-        $this->addFlash(
-            'notice',
-            'Tu contraseña ha sido actualizado correctamente'
-        );
+        $security->changePasswords($user, $newPassword);
+        $this->addFlash('notice', 'Tu contraseña ha sido actualizado correctamente');
 
         return $this->redirectToRoute('admin_user_profile_index');
     }

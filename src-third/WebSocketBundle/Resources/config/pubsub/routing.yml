@@ -1,0 +1,5 @@
+
+user.feed:
+    channel: "user/{user}/feed"
+    handler:
+        callback: 'user.feed' #related to the getName() of your topic

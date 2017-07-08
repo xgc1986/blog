@@ -8,5 +8,5 @@ interface JSON
 
     public function __getType(): string;
 
-    public function getId(): int;
+    public function getId(): ?int;
 }

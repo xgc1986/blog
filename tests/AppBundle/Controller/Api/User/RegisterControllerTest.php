@@ -153,7 +153,7 @@ class RegisterControllerTest extends WebTestCase
             [
                 'message' => "This value is too long. It should have 255 characters or less.",
                 'param'   => 'email',
-                'status'  => 400,
+                'status'  => 412,
             ],
             $user->getResponse()
         );
@@ -175,7 +175,7 @@ class RegisterControllerTest extends WebTestCase
             [
                 'message' => "This value is not a valid email address.",
                 'param'   => 'email',
-                'status'  => 400,
+                'status'  => 412,
             ],
             $user->getResponse()
         );
@@ -197,7 +197,7 @@ class RegisterControllerTest extends WebTestCase
             [
                 'message' => "This value is too short. It should have 4 characters or more.",
                 'param'   => 'username',
-                'status'  => 400,
+                'status'  => 412,
             ],
             $user->getResponse()
         );
@@ -219,7 +219,7 @@ class RegisterControllerTest extends WebTestCase
             [
                 'message' => "This value is too long. It should have 32 characters or less.",
                 'param'   => 'username',
-                'status'  => 400,
+                'status'  => 412,
             ],
             $user->getResponse()
         );
@@ -370,13 +370,11 @@ class RegisterControllerTest extends WebTestCase
                 'password2' => '123qweQWE',
             ]
         );
-        $user->check(409);
+
         self::assertArraySubset(
             [
-                'message'  => "username '$name' already exists",
-                'resource' => 'username',
-                'status'   => 409,
-                'value'    => $name,
+                'message' => 'Account already exists',
+                'status' => 409
             ],
             $user->getResponse()
         );
@@ -398,13 +396,11 @@ class RegisterControllerTest extends WebTestCase
                 'password2' => '123qweQWE',
             ]
         );
-        $user->check(409);
+
         self::assertArraySubset(
             [
-                'message'  => "email '$name@gmail.com' already exists",
-                'resource' => 'email',
-                'status'   => 409,
-                'value'    => "$name@gmail.com",
+                'message' => 'Account already exists',
+                'status' => 409
             ],
             $user->getResponse()
 
